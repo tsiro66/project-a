@@ -116,8 +116,7 @@ export default function Footer() {
             03 / Location
           </p>
           <p className="footer-link text-lg md:text-xl font-bold">
-            Patras, GR{" "}
-            <span className="hidden md:inline">— 38° 14&apos; N</span>
+            Patras, Greece
           </p>
         </div>
       </div>

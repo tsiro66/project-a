@@ -68,13 +68,12 @@ export default function Hero() {
       <div ref={textContentRef} className="relative z-10 text-white px-6 text-center">
         <div className="overflow-hidden mb-2">
           <h1 className="hero-text text-5xl md:text-7xl lg:text-9xl font-bold">
-            Websites built <br /> to <span className="text-lime-400 italic">impress</span>
+            Lorem ipsum<br /> dolor <span className="text-lime-400 italic">sit amet.</span>
           </h1>
         </div>
-        
         <div className="overflow-hidden">
           <p className="hero-subtext text-lg md:text-2xl font-mono text-zinc-300 uppercase tracking-widest">
-            Memorable designs & seamless experiences
+            consectetur adipisicing elit.
           </p>
         </div>
       </div>
