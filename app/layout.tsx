@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "./components/SmoothScroll";
+import ClientWrapper from "./components/ClientWrapper";
 import Navbar from "./components/Navbar";
 
 const inter = Inter({
@@ -12,7 +12,7 @@ const inter = Inter({
 const playfair_display = Playfair_Display({
   variable: "--font-playfair-display",
   subsets: ["latin"],
-})
+});
 
 export const metadata: Metadata = {
   title: "Project-A",
@@ -29,10 +29,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${playfair_display.variable} antialiased`}
       >
-        <Navbar />
-        <SmoothScroll>
+        <ClientWrapper>
+          <Navbar />
           {children}
-        </SmoothScroll>
+        </ClientWrapper>
       </body>
     </html>
   );

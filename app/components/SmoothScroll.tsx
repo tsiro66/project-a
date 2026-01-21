@@ -4,28 +4,39 @@ import { ReactLenis, LenisRef } from 'lenis/react';
 import gsap from 'gsap';
 import { useEffect, useRef } from 'react';
 
-export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+export default function SmoothScroll({ children, stop }: { children: React.ReactNode, stop: boolean }) {
   const lenisRef = useRef<LenisRef>(null);
+  const isStoppedRef = useRef(stop);
+
+  useEffect(() => {
+    isStoppedRef.current = stop;
+    const lenis = lenisRef.current?.lenis;
+    
+    if (stop) {
+      lenis?.stop();
+      lenis?.scrollTo(0, { immediate: true });
+    } else {
+      // 1. Force a jump to 0 to "eat" any buffered scroll momentum
+      lenis?.scrollTo(0, { immediate: true });
+      // 2. Start the engine back up
+      lenis?.start();
+    }
+  }, [stop]);
 
   useEffect(() => {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
-    // 2. Tell Lenis to jump to the top immediately on mount
-    // The { immediate: true } argument prevents a smooth scroll animation on load
-    lenisRef.current?.lenis?.scrollTo(0, { immediate: true });
 
-    // 'time' is a number representing elapsed seconds
     function update(time: number) {
-      lenisRef.current?.lenis?.raf(time * 1000);
+      // If we are stopped, we bypass RAF completely
+      if (!isStoppedRef.current) {
+        lenisRef.current?.lenis?.raf(time * 1000);
+      }
     }
 
-    // Connect Lenis to the GSAP Ticker
     gsap.ticker.add(update);
-
-    return () => {
-      gsap.ticker.remove(update);
-    };
+    return () => gsap.ticker.remove(update);
   }, []);
 
   return (

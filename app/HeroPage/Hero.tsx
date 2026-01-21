@@ -38,7 +38,7 @@ export default function Hero() {
     // --- PARALLAX SCROLL ANIMATION ---
     // This moves the text up faster than the background
     gsap.to(textContentRef.current, {
-      yPercent: -50, // Moves up as you scroll down
+      yPercent: -100, // Moves up as you scroll down
       ease: "none",
       scrollTrigger: {
         trigger: container.current,

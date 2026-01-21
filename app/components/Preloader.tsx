@@ -58,7 +58,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
   return (
     <div 
       ref={container} 
-      className="fixed inset-0 z-999 flex items-center justify-center pointer-events-none bg-zinc-950"
+      className="fixed inset-0 z-999 flex items-center justify-center pointer-events-none bg-zinc-950 touch-none"
     >
       {/* The SVG Background */}
       <svg 
