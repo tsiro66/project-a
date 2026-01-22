@@ -1,10 +1,10 @@
-import Hero from "./HeroPage/Hero";
-import AnimatedText from "./HeroPage/AnimatedText";
-import StickySection from "./HeroPage/StickySection";
-import Contact from "./HeroPage/Contact";
-import Footer from "./HeroPage/Footer";
+import Hero from "./PageComponents/Hero";
+import AnimatedText from "./PageComponents/AnimatedText";
+import StickySection from "./PageComponents/StickySection";
+import Contact from "./PageComponents/Contact";
+import Footer from "./PageComponents/Footer";
 import Cards from "./components/Cards";
-import About from "./HeroPage/About";
+import About from "./PageComponents/About";
 
 export default function Home() {
 
