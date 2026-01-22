@@ -3,6 +3,8 @@ import AnimatedText from "./HeroPage/AnimatedText";
 import StickySection from "./HeroPage/StickySection";
 import Contact from "./HeroPage/Contact";
 import Footer from "./HeroPage/Footer";
+import Cards from "./components/Cards";
+import About from "./HeroPage/About";
 
 export default function Home() {
 
@@ -10,7 +12,9 @@ export default function Home() {
     <main className="relative">
       <Hero />
       <AnimatedText />
+      <About />
       <StickySection />
+      <Cards />
       <Contact />
       <Footer />
     </main>

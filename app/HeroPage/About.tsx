@@ -7,7 +7,7 @@ import Button from "../components/Button";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function AboutPage() {
+export default function About() {
   const container = useRef(null);
 
   useGSAP(() => {
@@ -92,19 +92,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* 4. FINAL STATEMENT */}
-      <section className="px-4 md:px-10 py-32 text-center">
-        <div className="max-w-4xl mx-auto">
-          <h3 className="text-4xl md:text-7xl uppercase leading-tight mb-12">
-            Lorem ipsum dolor sit amet consectetur <span className="italic font-mono text-zinc-500 lowercase">adipiscing</span>.
-          </h3>
-            <Button variant="default">
-                Get in Touch
-            </Button>
-        </div>
-      </section>
-
     </main>
   );
 }

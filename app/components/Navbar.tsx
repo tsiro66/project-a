@@ -59,7 +59,7 @@ export default function Navbar() {
       if (!panelRef.current) return;
 
       gsap.to(panelRef.current, {
-        maxWidth: isOpen ? "calc(100vw - 3rem)" : "48rem",
+        maxWidth: isOpen ? "calc(100vw - 2rem)" : "48rem",
         height: isOpen ? "calc(100vh - 10rem)" : "3.5rem", // Standard bar height when closed
         borderRadius: isOpen ? "1rem" : "0.5rem",
         paddingBottom: isOpen ? "3rem" : "0rem",
@@ -80,7 +80,7 @@ export default function Navbar() {
       {/* 1. Main Navbar Bar */}
       <div
         ref={panelRef}
-        className="w-full max-w-3xl flex flex-col items-center bg-zinc-900 px-4 overflow-hidden rounded-lg"
+        className="w-full flex flex-col items-center bg-zinc-900 px-4 overflow-hidden rounded-lg"
       >
         {/* Header Row: This keeps items at the top during expansion */}
         <div className="w-full h-14 flex items-center justify-between shrink-0">
