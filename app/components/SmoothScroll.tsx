@@ -1,17 +1,23 @@
 "use client";
 
-import { ReactLenis, LenisRef } from 'lenis/react';
-import gsap from 'gsap';
-import { useEffect, useRef } from 'react';
+import { ReactLenis, LenisRef } from "lenis/react";
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
 
-export default function SmoothScroll({ children, stop }: { children: React.ReactNode, stop: boolean }) {
+export default function SmoothScroll({
+  children,
+  stop,
+}: {
+  children: React.ReactNode;
+  stop: boolean;
+}) {
   const lenisRef = useRef<LenisRef>(null);
   const isStoppedRef = useRef(stop);
 
   useEffect(() => {
     isStoppedRef.current = stop;
     const lenis = lenisRef.current?.lenis;
-    
+
     if (stop) {
       lenis?.stop();
       lenis?.scrollTo(0, { immediate: true });
@@ -24,27 +30,36 @@ export default function SmoothScroll({ children, stop }: { children: React.React
   }, [stop]);
 
   useEffect(() => {
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-    }
+    // Prevent GSAP from trying to catch up after lag spikes
+    gsap.ticker.lagSmoothing(0);
 
     function update(time: number) {
-      // If we are stopped, we bypass RAF completely
       if (!isStoppedRef.current) {
+        // Use time directly or let Lenis handle internal delta
         lenisRef.current?.lenis?.raf(time * 1000);
       }
     }
 
     gsap.ticker.add(update);
-    return () => gsap.ticker.remove(update);
+    return () => {
+      gsap.ticker.remove(update);
+      gsap.ticker.lagSmoothing(500, 33); // Reset to default on unmount
+    };
   }, []);
 
   return (
-    <ReactLenis 
-      root 
-      ref={lenisRef} 
-      autoRaf={false} 
-      options={{ lerp: 0.1, duration: 1.5 }}
+    <ReactLenis
+      root
+      ref={lenisRef}
+      autoRaf={false}
+      options={{
+        lerp: 0.1,
+        duration: 1.2,
+        smoothWheel: true,
+        syncTouch: true, // Mimics native touch feel more closely
+        touchMultiplier: 1.5, // Makes it feel more responsive on small swipes
+        wheelMultiplier: 1,
+      }}
     >
       {children}
     </ReactLenis>

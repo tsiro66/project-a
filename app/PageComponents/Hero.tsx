@@ -59,6 +59,8 @@ export default function Hero() {
 
       // --- MOUSE PARALLAX LOGIC ---
       const handleMouseMove = (e: MouseEvent) => {
+        if (ScrollTrigger.isTouch === 1) return;
+
         const { clientX, clientY } = e;
         const { innerWidth, innerHeight } = window;
 
@@ -100,9 +102,8 @@ export default function Hero() {
       className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black"
     >
       {/* Background Image */}
-      <div ref={bgRef} className="absolute inset-0 w-full h-full scale-110">
-        {" "}
-        {/* Scale added to prevent edges showing */}
+      <div ref={bgRef} className="absolute inset-0 w-full h-full scale-110 will-change-transform">
+        Scale added to prevent edges showing
         <Image
           src="/hero-image.jpg"
           fill
@@ -116,7 +117,7 @@ export default function Hero() {
       {/* Parallax Content Container */}
       <div
         ref={textContentRef}
-        className="relative z-10 text-white px-6 text-center"
+        className="relative z-10 text-white px-6 text-center will-change-transform"
         style={{ transformStyle: "preserve-3d" }}
       >
         <div className="overflow-hidden mb-2">
