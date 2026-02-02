@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Bebas_Neue, Inter, Syne } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "./components/ClientWrapper";
 import Navbar from "./components/Navbar";
@@ -9,11 +9,16 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const playfair_display = Playfair_Display({
-  variable: "--font-playfair-display",
+const bebas_neue = Bebas_Neue({
+  variable: "--font-bebas-neue",
   subsets: ["latin"],
+  weight: "400"
 });
 
+const font_syne = Syne({
+  variable: "--font-syne",
+  subsets: ["latin"],
+})
 export const metadata: Metadata = {
   title: "Project-A",
   description: "Best website ever",
@@ -27,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${playfair_display.variable} antialiased`}
+        className={`${inter.variable} ${bebas_neue.variable} ${font_syne.variable} antialiased`}
       >
         <ClientWrapper>
           <Navbar />

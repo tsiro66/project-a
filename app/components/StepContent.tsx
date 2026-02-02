@@ -68,12 +68,12 @@ export default function StepContent({
         </span>
       </div>
 
-      <h3 className="text-6xl md:text-8xl font-black uppercase mb-6 leading-[0.8] tracking-wider md:tracking-widest flex flex-wrap">
+      <h3 className="text-2xl md:text-4xl font-black uppercase mb-6 leading-[0.8] tracking-wider md:tracking-widest flex flex-wrap font-syne">
         {splitWords(title)}
       </h3>
 
       <div className="flex gap-6 items-start">
-        <p className="text-xl md:text-2xl leading-[0.8] tracking-tight flex flex-wrap">
+        <p className="text-lg md:text-xl leading-[0.8] tracking-tight flex flex-wrap">
           {splitWords(text)}
         </p>
       </div>

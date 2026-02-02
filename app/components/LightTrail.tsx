@@ -12,10 +12,16 @@ import { BlendFunction } from "postprocessing";
 
 function Scene() {
   const groupRef = useRef<THREE.Group>(null!);
-  
-  const redRef = useRef<THREE.Mesh<THREE.TubeGeometry, THREE.MeshBasicMaterial>>(null!);
-  const greenRef = useRef<THREE.Mesh<THREE.TubeGeometry, THREE.MeshBasicMaterial>>(null!);
-  const blueRef = useRef<THREE.Mesh<THREE.TubeGeometry, THREE.MeshBasicMaterial>>(null!);
+
+  const redRef = useRef<
+    THREE.Mesh<THREE.TubeGeometry, THREE.MeshBasicMaterial>
+  >(null!);
+  const greenRef = useRef<
+    THREE.Mesh<THREE.TubeGeometry, THREE.MeshBasicMaterial>
+  >(null!);
+  const blueRef = useRef<
+    THREE.Mesh<THREE.TubeGeometry, THREE.MeshBasicMaterial>
+  >(null!);
 
   const curve = useMemo(() => {
     return new THREE.CatmullRomCurve3([
@@ -26,7 +32,7 @@ function Scene() {
     ]);
   }, []);
 
-useFrame((state) => {
+  useFrame((state) => {
     const t = state.clock.getElapsedTime();
 
     // 1. Slightly faster group rotation for more energy
@@ -49,14 +55,19 @@ useFrame((state) => {
       // 3. Faster glow pulse
       const pulseBase = 2;
       // Increased pulse frequency to 4.0
-      const pulseVariation = Math.sin(t * 4.0) * 0.6; 
+      const pulseVariation = Math.sin(t * 4.0) * 0.6;
       redRef.current.material.color.setRGB(pulseBase + pulseVariation, 0, 0);
       blueRef.current.material.color.setRGB(0, 0, pulseBase + pulseVariation);
     }
   });
 
-  const tubeArgs: [THREE.Curve<THREE.Vector3>, number, number, number, boolean] = 
-    [curve, 128, 0.2, 8, false];
+  const tubeArgs: [
+    THREE.Curve<THREE.Vector3>,
+    number,
+    number,
+    number,
+    boolean,
+  ] = [curve, 128, 0.2, 8, false];
 
   return (
     <>
@@ -64,30 +75,30 @@ useFrame((state) => {
         {/* Red Channel - slight offset remains but position is static */}
         <mesh ref={redRef} position={[-0.08, 0, -0.05]}>
           <tubeGeometry args={tubeArgs} />
-          <meshBasicMaterial 
-            color={[1.5, 0, 0]} 
-            blending={THREE.AdditiveBlending} 
-            depthWrite={false} 
+          <meshBasicMaterial
+            color={[1.5, 0, 0]}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
           />
         </mesh>
 
         {/* Green Channel - The Anchor */}
         <mesh ref={greenRef} position={[0, 0, 0]}>
           <tubeGeometry args={tubeArgs} />
-          <meshBasicMaterial 
-            color={[0, 1.5, 0]} 
-            blending={THREE.AdditiveBlending} 
-            depthWrite={false} 
+          <meshBasicMaterial
+            color={[0, 1.5, 0]}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
           />
         </mesh>
 
         {/* Blue Channel - slight offset remains but position is static */}
         <mesh ref={blueRef} position={[0.08, 0, 0.05]}>
           <tubeGeometry args={tubeArgs} />
-          <meshBasicMaterial 
-            color={[0, 0, 1.5]} 
-            blending={THREE.AdditiveBlending} 
-            depthWrite={false} 
+          <meshBasicMaterial
+            color={[0, 0, 1.5]}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
           />
         </mesh>
       </group>
@@ -100,8 +111,8 @@ useFrame((state) => {
           radius={0.6}
         />
         <ChromaticAberration
-          blendFunction={BlendFunction.SCREEN} 
-          offset={new THREE.Vector2(0.00, 0.00)}
+          blendFunction={BlendFunction.SCREEN}
+          offset={new THREE.Vector2(0.0, 0.0)}
         />
       </EffectComposer>
     </>
@@ -110,16 +121,19 @@ useFrame((state) => {
 
 export default function LightTrail() {
   return (
-    <div className="h-full w-full bg-[#050505]">
+    <div className="h-full w-full">
       <Canvas
         camera={{ position: [0, 0, 8], fov: 40 }}
+        dpr={[1, 1.5]}
         gl={{
           antialias: false,
           powerPreference: "high-performance",
           alpha: true,
+          stencil: false, // Save memory
+          depth: false,
         }}
       >
-        <color attach="background" args={["#050505"]} />
+        {/* <color attach="background" args={["#050505"]} /> */}
         <Scene />
       </Canvas>
     </div>

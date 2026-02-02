@@ -23,56 +23,75 @@ export default function Cards() {
 
   useGSAP(
     () => {
-      const pin = gsap.fromTo(
-        sectionRef.current,
-        { x: 0 },
-        {
-          x: "-330vw", // Moves 4 cards' width (since 1st is visible)
-          ease: "none",
-          scrollTrigger: {
-            trigger: triggerRef.current,
-            start: "top top",
-            end: "2000 top", // Duration of the horizontal scroll
-            scrub: 0.6,
-            pin: true,
-            anticipatePin: 1,
+      // Create a MatchMedia instance
+      const mm = gsap.matchMedia();
+
+      // Only run horizontal scroll on Desktop (min-width: 1024px)
+      mm.add("(min-width: 1024px)", () => {
+        gsap.fromTo(
+          sectionRef.current,
+          { x: 0 },
+          {
+            x: "-330vw",
+            ease: "none",
+            scrollTrigger: {
+              trigger: triggerRef.current,
+              start: "top top",
+              end: "+=3000",
+              scrub: 0.6,
+              pin: true,
+              anticipatePin: 1,
+            },
           },
-        },
-      );
-      return () => pin.kill();
+        );
+      });
+
+      return () => mm.revert(); // Clean up all animations
     },
     { scope: triggerRef },
   );
 
   return (
-    <div className="overflow-hidden">
-      {/* Container that stays pinned */}
+    <div className="relative overflow-hidden">
       <div ref={triggerRef}>
-          <div className="absolute inset-0 pointer-events-none">
-          {/* <div className="absolute inset-0 z-10 bg-zinc-950/20 pointer-events-none" /> */}
-            <LightTrail />
-          </div>
+        <div className="fixed inset-0 pointer-events-none z-0 bg-zinc-950">
+          <LightTrail />
+        </div>
+
         <div
           ref={sectionRef}
-          className="flex h-screen w-[500vw] relative items-center px-[5vw] gap-[5vw] z-20"
+          className={`
+            flex relative items-center z-10
+            /* Mobile: Vertical stack */
+            flex-col h-auto w-full gap-10 py-20 px-6
+            /* Desktop: Horizontal row */
+            lg:flex-row lg:h-screen lg:w-[500vw] lg:gap-[5vw] lg:px-[5vw] lg:py-0
+          `}
         >
           {CARDS.map((card) => (
             <div
               key={card.id}
-              className={`relative h-[70vh] w-[80vw] shrink-0 flex flex-col justify-between p-10 ${card.color} ${card.text || "text-zinc-950"}`}
+              className={`
+                relative shrink-0 flex flex-col justify-between p-10 
+                /* Mobile sizing */
+                h-[60vh] w-full
+                /* Desktop sizing */
+                lg:h-[70vh] lg:w-[80vw] 
+                ${card.color} ${card.text || "text-zinc-950"}
+              `}
             >
               <span className="text-2xl font-mono font-bold">0{card.id}</span>
 
-              <h3 className="text-[15vw] font-black uppercase tracking-tighter leading-none italic">
+              <h3 className="text-[15vw] lg:text-[12vw] font-black uppercase tracking-tighter leading-none italic">
                 {card.title}
               </h3>
 
               <div className="flex justify-between items-end">
-                <p className="max-w-xs font-medium uppercase text-sm leading-tight">
+                <p className="max-w-[200px] lg:max-w-xs font-medium uppercase text-xs lg:text-sm leading-tight">
                   High-performance solutions tailored for modern digital
                   ecosystems.
                 </p>
-                <div className="w-16 h-16 rounded-full border-2 border-current flex items-center justify-center text-3xl">
+                <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-full border-2 border-current flex items-center justify-center text-2xl lg:text-3xl">
                   ↗
                 </div>
               </div>

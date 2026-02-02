@@ -10,68 +10,81 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 export default function AnimatedText() {
   const container = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  
-  const textContent =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum atque, officia dolores itaque neque labore vero possimus facere autem facilis quia officiis, eaque laborum quidem, sint soluta voluptas aut velit.";
 
-  useGSAP(() => {
-    const mm = gsap.matchMedia();
+  const rawContent = `Η ΕΠΙΧΕΙΡΗΣΗ ΣΟΥ ΔΕΝ ΕΙΝΑΙ TEMPLATE. ΓΙΑΤΙ ΝΑ ΕΙΝΑΙ ΤΟ SITE ΣΟΥ? ΣΤΗ FLUX <span class="text-lime-400">ΚΑΤΑΣΤΡΕΦΟΥΜΕ ΤΟ ΣΥΝΗΘΙΣΜΕΝΟ.</span> 
+  DESIGN ΠΟΥ ΣΟΚΑΡΕΙ, ΚΩΔΙΚΑΣ ΠΟΥ ΠΟΥΛΑΕΙ.`;
 
-    mm.add({
-      isDesktop: "(min-width: 768px)",
-      isMobile: "(max-width: 767px)"
-    }, (context) => {
-      // Manual type casting for the custom conditions
-      const { isDesktop } = context.conditions as { isDesktop: boolean; isMobile: boolean };
+  useGSAP(
+    () => {
+      // Δημιουργούμε το SplitText ΕΚΤΟΣ του matchMedia για να είναι έτοιμο
+      const split = new SplitText(textRef.current, { type: "words, lines" });
+      const words = split.words;
 
-      if (isDesktop && textRef.current) {
-        // Desktop: High-detail split animation
-        const split = new SplitText(textRef.current, { 
-          type: "lines, words",
-        });
+      // Προσθέτουμε GPU acceleration στα words αμέσως
+      gsap.set(words, {
+        transformPerspective: 1000,
+        backfaceVisibility: "hidden",
+      });
 
-        gsap.from(split.words, {
-          yPercent: 100,
-          autoAlpha: 0,
-          stagger: 0.02,
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 75%",
-            end: "bottom 25%",
-            scrub: 1,
+      const mm = gsap.matchMedia();
+
+      mm.add(
+        {
+          isDesktop: "(min-width: 768px)",
+          isMobile: "(max-width: 767px)",
+        },
+        (context) => {
+          const { isDesktop } = context.conditions as { isDesktop: boolean };
+
+          if (isDesktop) {
+            // DESKTOP: Scrub animation για λέξη-λέξη
+            gsap.from(words, {
+              y: 40,
+              autoAlpha: 0,
+              stagger: 1,
+              duration: 0.5,
+              force3D: true,
+              scrollTrigger: {
+                trigger: container.current,
+                start: "top 50%",
+                end: "bottom 100%",
+                scrub: true,
+              },
+            });
+          } else {
+            gsap.from(words, {
+              y: 20,
+              autoAlpha: 0,
+              stagger: 0.07,
+              duration: 0.5,
+              ease: "power2.out",
+              force3D: true,
+              scrollTrigger: {
+                trigger: container.current,
+                start: "top 30%",
+                toggleActions: "play none none reverse",
+              },
+            });
           }
-        });
+        },
+      );
 
-        return () => split.revert();
-      } else {
-        // Mobile: Ultra-performant single block fade
-        gsap.from(textRef.current, {
-          y: 20,
-          autoAlpha: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 40%",
-            toggleActions: "play none none reverse",
-          }
-        });
-      }
-    });
-  }, { scope: container });
+      return () => split.revert();
+    },
+    { scope: container },
+  );
 
   return (
     <div
       ref={container}
-      className="min-h-screen flex items-center justify-center p-10 md:p-30 uppercase bg-zinc-200 text-black"
+      className=" min-h-screen flex items-center justify-center p-10 md:p-30 uppercase bg-zinc-950 text-zinc-100 overflow-hidden"
     >
-      <div 
+      <div
         ref={textRef}
-        className="text-2xl md:text-4xl lg:text-6xl text-center font-mono"
-        style={{ willChange: "transform, opacity" }}
-      >
-        {textContent}
-      </div>
+        className="text-2xl md:text-4xl lg:text-5xl text-center font-syne font-black leading-tight tracking-tighter"
+        style={{ willChange: "transform" }}
+        dangerouslySetInnerHTML={{ __html: rawContent }}
+      />
     </div>
   );
 }

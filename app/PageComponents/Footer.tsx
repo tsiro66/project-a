@@ -70,7 +70,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="relative bg-lime-400 text-zinc-950 px-6 py-10 md:py-20 md:px-12 lg:px-24 flex flex-col justify-between overflow-hidden"
+      className="relative isolate bg-lime-400 text-zinc-950 px-6 py-10 md:py-20 md:px-12 lg:px-24 flex flex-col justify-between overflow-hidden"
     >
       {/* Grid Layout Fix: Added 'w-full' and ensured explicit heights aren't cutting off content */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-y-12 gap-x-4 border-t border-zinc-950/20 pt-8 md:pt-12 w-full">

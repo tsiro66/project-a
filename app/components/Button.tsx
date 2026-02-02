@@ -23,7 +23,7 @@ export default function Button({
   // Define base styles for different variants
   const variantStyles = {
     default: "px-6 py-2 text-lg md:text-2xl rounded-full tracking-tighter uppercase font-bold",
-    nav: "px-3 md:px-5 h-9 text-sm md:text-lg rounded-3xl font-medium hover:rounded-lg"
+    nav: "px-3 md:px-5 h-7 text-xs md:text-lg rounded-3xl font-medium hover:rounded-lg"
   };
 
   return (
@@ -32,7 +32,7 @@ export default function Button({
         type={type}
         onClick={onClick}
         className={`group relative overflow-hidden bg-lime-400 text-zinc-950 transition-all duration-300 ease-in-out pointer-events-auto 
-            cursor-pointer flex items-center justify-center ${variantStyles[variant]} ${className}`}
+            cursor-pointer flex items-center justify-center font-syne ${variantStyles[variant]} ${className}`}
       >
         <span className="relative z-10">{children}</span>
         

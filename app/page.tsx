@@ -4,22 +4,28 @@ import StickySection from "./PageComponents/StickySection";
 import Contact from "./PageComponents/Contact";
 import Footer from "./PageComponents/Footer";
 import Cards from "./PageComponents/Cards";
-import About from "./PageComponents/About";
-import LightTrail from "./components/LightTrail";
 
 export default function Home() {
   return (
     <main className="relative">
-      <Hero />
-      <AnimatedText />
-      {/* <About /> */}
-      <StickySection />
-      <Cards />
-      <Contact />
-      {/* <div className="h-screen w-full">
-        <LightTrail />
-      </div> */}
-      <Footer />
+      <section className="relative z-20">
+        <Hero />
+      </section>
+      <section className="relative z-20">
+        <AnimatedText />
+      </section>
+      <section className="relative z-20">
+        <StickySection />
+      </section>
+      <section className="relative z-30 [clip-path:inset(0_0_0_0)]">
+        <Cards />
+      </section>
+      <section className="relative z-20">
+        <Contact />
+      </section>
+      <section className="sticky bottom-0 overflow-hidden z-10">
+        <Footer />
+      </section>
     </main>
   );
 }

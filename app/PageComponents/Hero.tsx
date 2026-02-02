@@ -98,14 +98,17 @@ export default function Hero() {
 
   return (
     <div
+      id="hero-section"
       ref={container}
       className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black"
     >
       {/* Background Image */}
-      <div ref={bgRef} className="absolute inset-0 w-full h-full scale-110 will-change-transform">
-        Scale added to prevent edges showing
+      <div
+        ref={bgRef}
+        className="absolute inset-0 w-full h-full scale-110 will-change-transform"
+      >
         <Image
-          src="/hero-image.jpg"
+          src="/hero-image-5.jpg"
           fill
           priority
           className="object-cover"
@@ -120,17 +123,17 @@ export default function Hero() {
         className="relative z-10 text-white px-6 text-center will-change-transform"
         style={{ transformStyle: "preserve-3d" }}
       >
-        <div className="overflow-hidden mb-2">
-          <h1 className="hero-text text-5xl md:text-7xl lg:text-9xl font-bold leading-[0.8] tracking-tighter">
-            Lorem ipsum
-            <br /> dolor <span className="text-lime-400 italic">sit amet.</span>
+        <div className=" mb-2">
+          <h1 className="hero-text text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter">
+            Θελεις το site
+            <br /> σου να{" "}
+            <span className="text-lime-400 italic">εντυπωσιάζει ?</span>
           </h1>
         </div>
-        <div className="overflow-hidden">
-          <p className="hero-subtext text-lg md:text-2xl font-mono text-zinc-300 uppercase tracking-widest">
-            consectetur adipisicing elit.
-          </p>
-        </div>
+
+        <p className="hero-subtext text-lg md:text-2xl font-mono text-zinc-300 uppercase tracking-widest">
+          High-end digital solutions
+        </p>
       </div>
     </div>
   );

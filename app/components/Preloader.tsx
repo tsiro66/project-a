@@ -1,78 +1,85 @@
 "use client";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+
+const WORDS = ["DESIGNING...", "CODING...", "EVOLVING...", "F L U X"];
+const CHARS = "!<>-_\\/[]{}—=+*^?#________";
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const container = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
+  const textRef = useRef<HTMLHeadingElement>(null);
 
   useGSAP(() => {
     const tl = gsap.timeline({
       onComplete: () => onComplete(),
     });
 
-    // 1. Animate the text entrance and exit
-    tl.from(".loader-text", {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.5,
-      ease: "power3.out",
-    })
-    .to(".loader-text", {
-      y: -40,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.5,
-      ease: "power3.in",
+    // 1. Shuffle Logic για κάθε λέξη
+    WORDS.forEach((word, index) => {
+      const isLast = index === WORDS.length - 1;
+      
+      tl.to(textRef.current, {
+        duration: isLast ? 0.8 : 0.4, // Η τελευταία λέξη μένει λίγο παραπάνω
+        onStart: () => {
+          // Pulse effect στο χρώμα
+          gsap.to(textRef.current, {
+            opacity: 0.7,
+            repeat: 1,
+            yoyo: true,
+            duration: 0.1,
+          });
+        },
+        onUpdate: function() {
+          // Εδώ γίνεται το "μαγικό" shuffle
+          const progress = this.progress();
+          const scrambled = word
+            .split("")
+            .map((char, i) => {
+              if (progress > i / word.length) return char;
+              return CHARS[Math.floor(Math.random() * CHARS.length)];
+            })
+            .join("");
+          
+          if (textRef.current) textRef.current.innerText = scrambled;
+        },
+        ease: "none",
+        delay: index === 0 ? 0.5 : 0.1,
+      });
+
+      // Μικρή παύση ανάμεσα στις λέξεις (εκτός από την τελευταία)
+      if (!isLast) {
+        tl.to({}, { duration: 0.2 });
+      }
     });
 
-    // 2. The Organic Reveal
-    // We animate the "d" attribute of the path to flatten the curve as it lifts
-    const curveValue = 300; // How deep the curve starts
-    
-    tl.to(pathRef.current, {
-      attr: { d: `M0 0 L${window.innerWidth} 0 L${window.innerWidth} ${window.innerHeight} Q${window.innerWidth/2} ${window.innerHeight} 0 ${window.innerHeight} L0 0` },
-      duration: 0.1, // Reset path
-    })
-    .to(container.current, {
+    // 2. Exit Animation (Raw & Fast)
+    tl.to(container.current, {
       yPercent: -100,
-      duration: 1.2,
-      ease: "power4.inOut",
-    })
-    .to(pathRef.current, {
-      attr: { d: `M0 0 L${window.innerWidth} 0 L${window.innerWidth} ${window.innerHeight} Q${window.innerWidth/2} ${window.innerHeight + curveValue} 0 ${window.innerHeight} L0 0` },
-      duration: 0.6,
-      ease: "power2.in",
-    }, "-=1.2") // Start stretching as it begins to lift
-    .to(pathRef.current, {
-      attr: { d: `M0 0 L${window.innerWidth} 0 L${window.innerWidth} ${window.innerHeight} Q${window.innerWidth/2} ${window.innerHeight} 0 ${window.innerHeight} L0 0` },
-      duration: 0.6,
-      ease: "power2.out",
-    }, "-=0.6"); // Flatten out as it finishes
+      duration: 0.8,
+      ease: "expo.inOut",
+      delay: 0.5,
+    });
 
   }, { scope: container });
 
   return (
     <div 
       ref={container} 
-      className="fixed inset-0 z-999 flex items-center justify-center pointer-events-none bg-zinc-950 touch-none"
+      className="fixed inset-0 z-999 flex items-center justify-center bg-zinc-950 touch-none pointer-events-auto"
     >
-      {/* The SVG Background */}
-      <svg 
-        ref={svgRef}
-        className="absolute top-0 w-full h-[110vh] fill-zinc-950 transition-none"
-      >
-        <path ref={pathRef} />
-      </svg>
-
-      <div className="relative z-10 overflow-hidden">
-        <h1 className="loader-text font-black text-4xl md:text-6xl uppercase tracking-tighter text-lime-400">
-          loading
+      <div className="relative overflow-hidden px-10">
+        <h1 
+          ref={textRef}
+          className="font-black font-syne text-3xl md:text-8xl uppercase tracking-tighter text-lime-400 drop-shadow-[0_0_15px_rgba(163,230,53,0.3)]"
+        >
+          {/* Αρχικό κείμενο κενό ή η πρώτη λέξη */}
+          _
         </h1>
       </div>
+      
+      {/* Προαιρετικό: Ένα "scanline" εφέ για περισσότερο raw vibe */}
+      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-size-[100%_2px,3px_100%]" />
     </div>
   );
 }

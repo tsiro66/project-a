@@ -15,7 +15,7 @@ export default function StickySection() {
   const lineRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
-  // Helper to split text into characters
+  // Helper to split text - Προσθήκη GPU hint (will-change)
   const splitText = (text: string) => {
     return text.split("").map((char, i) => (
       <span
@@ -32,17 +32,18 @@ export default function StickySection() {
       const mm = gsap.matchMedia();
 
       // --- 1. CHARACTER REVEAL ---
-      // We target the nested .char spans
       const chars = titleRef.current?.querySelectorAll(".char");
       if (chars) {
         gsap.to(chars, {
           y: 0,
           stagger: 0.05,
-          duration: 1,
-          ease: "power4.out",
+          duration: 0.8,
+          ease: "power3.out",
+          force3D: true, // GPU Acceleration
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top 60%", // Trigger slightly later for better visibility
+            start: "top 70%",
+            toggleActions: "play none none reverse", // Όχι scrub εδώ, είναι βαρύ για γράμματα
           },
         });
       }
@@ -67,42 +68,31 @@ export default function StickySection() {
           },
         });
 
-        // 1. Line grows downwards from the top origin
         tl.fromTo(
           lineRef.current,
           { scaleY: 0, transformOrigin: "top" },
-          { scaleY: 4, duration: 1, ease: "none" },
-          0,
+          { scaleY: 4, duration: 1, ease: "none", force3D: true },
+          0
         )
-          // 2. Title moves down at the same time
-          .to(titleRef.current, { y: 400, duration: 1, ease: "none" }, 0)
-
-          // 3. NEW: The start of the line begins moving down
-          // We start this at "0.5" (the midpoint of the 1-second timeline)
-          .to(
-            lineRef.current,
-            {
-              y: 1000,
-              duration: 0.5,
-              ease: "none",
-            },
-            0.5,
-          );
+        .to(titleRef.current, { y: 800, duration: 1, ease: "none", force3D: true }, 0)
+        .to(lineRef.current, { y: 1000, duration: 0.5, ease: "none", force3D: true }, 0.5);
       });
 
-      // --- 3. MOBILE ONLY ---
+      // --- 3. MOBILE ONLY (Optimized) ---
       mm.add("(max-width: 767px)", () => {
+        // Αφαιρούμε το scrub αν κολλάει πολύ, ή το κρατάμε μόνο για την απλή γραμμή
         gsap.fromTo(
           lineRef.current,
           { scaleX: 0, transformOrigin: "left" },
           {
             scaleX: 1,
             ease: "none",
+            force3D: true,
             scrollTrigger: {
               trigger: containerRef.current,
               start: "top 20%",
               end: "bottom bottom",
-              scrub: true,
+              scrub: true, // Η γραμμή είναι ελαφρύ element, το scrub αντέχεται
             },
           },
         );
@@ -110,7 +100,7 @@ export default function StickySection() {
 
       return () => mm.revert();
     },
-    { scope: containerRef },
+    { scope: containerRef }
   );
 
   return (
@@ -126,40 +116,37 @@ export default function StickySection() {
           <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-10">
             <div
               ref={lineRef}
-              className="w-full h-1 md:w-1 md:h-60 bg-zinc-900 origin-left md:origin-top"
+              className="w-full h-1 md:w-2.5 md:h-60 bg-zinc-900 rounded-xs origin-left md:origin-top"
+              style={{ willChange: "transform" }}
             />
 
             <h2
               ref={titleRef}
-              className="text-6xl pr-4 md:text-7xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.8] flex flex-col"
+              className="text-3xl pr-4 md:text-7xl lg:text-6xl font-syne font-black uppercase tracking-tighter leading-[0.8] flex flex-col"
+              style={{ backfaceVisibility: "hidden" }}
             >
-              {/* Apply overflow-hidden to the line level only */}
               <span className="block overflow-hidden px-4">
-                {splitText("Our")}
-              </span>
-              <span className="block overflow-hidden px-4">
-                {splitText("Process")}
+                {splitText("Υπηρεσιες")}
               </span>
             </h2>
           </div>
         </div>
-        {/* Right Side: Content steps */}
-        <div className="w-full md:w-1/2 flex flex-col gap-40 md:gap-[80vh] pt-40 md:pt-96 md:pb-[100vh]">
-          {" "}
+        
+        <div className="w-full md:w-1/2 flex flex-col items-center justify-center gap-20 md:gap-[80vh] pt-20 md:pt-96 md:pb-[100vh]">
           <StepContent
             number="01"
             title="Strategy"
-            text="Deep diving into your brand to find the unique angle that makes people stop and stare.Deep diving into your brand to find the unique angle that makes people stop and stare.Deep diving into your brand to find the unique angle that makes people stop and stare.Deep diving into your brand to find the unique angle that makes people stop and stare."
+            text="Deep diving into your brand to find the unique angle that makes people stop and stare."
           />
           <StepContent
             number="02"
             title="Design"
-            text="Translating strategy into visual language. We don't just make it pretty; we make it work.We don't just make it pretty; we make it work.We don't just make it pretty; we make it work.We don't just make it pretty; we make it work.We don't just make it pretty; we make it work."
+            text="Translating strategy into visual language. We don't just make it pretty; we make it work."
           />
           <StepContent
             number="03"
             title="Launch"
-            text="Deploying the vision and scaling it. This is where your brand meets the real world.This is where your brand meets the real world.This is where your brand meets the real world.This is where your brand meets the real world.This is where your brand meets the real world.This is where your brand meets the real world."
+            text="Deploying the vision and scaling it. This is where your brand meets the real world."
           />
         </div>
       </div>
