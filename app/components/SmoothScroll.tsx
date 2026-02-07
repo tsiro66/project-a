@@ -12,10 +12,8 @@ export default function SmoothScroll({
   stop: boolean;
 }) {
   const lenisRef = useRef<LenisRef>(null);
-  const isStoppedRef = useRef(stop);
 
   useEffect(() => {
-    isStoppedRef.current = stop;
     const lenis = lenisRef.current?.lenis;
 
     if (stop) {
@@ -34,10 +32,7 @@ export default function SmoothScroll({
     gsap.ticker.lagSmoothing(0);
 
     function update(time: number) {
-      if (!isStoppedRef.current) {
-        // Use time directly or let Lenis handle internal delta
         lenisRef.current?.lenis?.raf(time * 1000);
-      }
     }
 
     gsap.ticker.add(update);
@@ -56,7 +51,7 @@ export default function SmoothScroll({
         lerp: 0.1,
         duration: 1.2,
         smoothWheel: true,
-        syncTouch: true, // Mimics native touch feel more closely
+        // syncTouch: true,
         touchMultiplier: 1.5, // Makes it feel more responsive on small swipes
         wheelMultiplier: 1,
       }}

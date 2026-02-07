@@ -56,12 +56,12 @@ export default function AnimatedText() {
               y: 20,
               autoAlpha: 0,
               stagger: 0.07,
-              duration: 0.5,
+              duration: 0.2,
               ease: "power2.out",
               force3D: true,
               scrollTrigger: {
                 trigger: container.current,
-                start: "top 30%",
+                start: "top 20%",
                 toggleActions: "play none none reverse",
               },
             });
@@ -77,11 +77,11 @@ export default function AnimatedText() {
   return (
     <div
       ref={container}
-      className=" min-h-screen flex items-center justify-center p-10 md:p-30 uppercase bg-zinc-950 text-zinc-100 overflow-hidden"
+      className="min-h-screen flex items-center justify-center p-10 md:p-30 uppercase bg-zinc-950 text-zinc-100 overflow-hidden"
     >
       <div
         ref={textRef}
-        className="text-2xl md:text-4xl lg:text-5xl text-center font-syne font-black leading-tight tracking-tighter"
+        className="text-xl md:text-4xl lg:text-5xl text-center font-syne font-black leading-tight tracking-tighter"
         style={{ willChange: "transform" }}
         dangerouslySetInnerHTML={{ __html: rawContent }}
       />

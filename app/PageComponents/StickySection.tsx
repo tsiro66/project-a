@@ -7,9 +7,6 @@ import StepContent from "../components/StepContent";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
-  
-  // 1. FIX: Prevent ScrollTrigger from recalculating on mobile address bar resize
-  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 export default function StickySection() {
@@ -18,6 +15,7 @@ export default function StickySection() {
   const lineRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
+  // Helper to split text - Προσθήκη GPU hint (will-change)
   const splitText = (text: string) => {
     return text.split("").map((char, i) => (
       <span
@@ -41,11 +39,11 @@ export default function StickySection() {
           stagger: 0.05,
           duration: 0.8,
           ease: "power3.out",
-          force3D: true, 
+          force3D: true, // GPU Acceleration
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top 70%",
-            toggleActions: "play none none reverse",
+            toggleActions: "play none none reverse", // Όχι scrub εδώ, είναι βαρύ για γράμματα
           },
         });
       }
@@ -66,7 +64,7 @@ export default function StickySection() {
             trigger: containerRef.current,
             start: "top center",
             end: "bottom center",
-            scrub: true, // Scrub true is fine for desktop
+            scrub: true,
           },
         });
 
@@ -74,14 +72,23 @@ export default function StickySection() {
           lineRef.current,
           { scaleY: 0, transformOrigin: "top" },
           { scaleY: 4, duration: 1, ease: "none", force3D: true },
-          0
+          0,
         )
-        .to(titleRef.current, { y: 800, duration: 1, ease: "none", force3D: true }, 0)
-        .to(lineRef.current, { y: 1000, duration: 0.5, ease: "none", force3D: true }, 0.5);
+          .to(
+            titleRef.current,
+            { y: 800, duration: 1, ease: "none", force3D: true },
+            0,
+          )
+          .to(
+            lineRef.current,
+            { y: 1000, duration: 0.5, ease: "none", force3D: true },
+            0.5,
+          );
       });
 
       // --- 3. MOBILE ONLY (Optimized) ---
       mm.add("(max-width: 767px)", () => {
+        // Αφαιρούμε το scrub αν κολλάει πολύ, ή το κρατάμε μόνο για την απλή γραμμή
         gsap.fromTo(
           lineRef.current,
           { scaleX: 0, transformOrigin: "left" },
@@ -91,11 +98,9 @@ export default function StickySection() {
             force3D: true,
             scrollTrigger: {
               trigger: containerRef.current,
-              start: "top 40%", // Adjusted slightly for better mobile trigger
+              start: "top 20%",
               end: "bottom bottom",
-              // 2. FIX: Use a number (0.5) instead of true
-              // This smooths out the link between scrollbar and animation
-              scrub: 0.5, 
+              scrub: true, // Η γραμμή είναι ελαφρύ element, το scrub αντέχεται
             },
           },
         );
@@ -103,7 +108,7 @@ export default function StickySection() {
 
       return () => mm.revert();
     },
-    { scope: containerRef }
+    { scope: containerRef },
   );
 
   return (
@@ -116,17 +121,18 @@ export default function StickySection() {
           className="w-full md:w-1/2 h-fit flex flex-col justify-start"
           ref={leftColumnRef}
         >
-          <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-10">
+          {/* 1. Center everything on mobile, align start on desktop */}
+          <div className="flex flex-col md:flex-row md:items-start items-center text-center md:text-left gap-0 md:gap-10">
+            {/* 2. Hidden on mobile, block on desktop */}
             <div
               ref={lineRef}
-              // Changed rounded-xs to rounded-sm (xs is not standard tailwind)
-              className="w-full h-1 md:w-2.5 md:h-60 bg-zinc-900 rounded-sm origin-left md:origin-top"
+              className="hidden md:block md:w-2.5 md:h-60 bg-zinc-900 rounded-xs md:origin-top"
               style={{ willChange: "transform" }}
             />
 
             <h2
               ref={titleRef}
-              className="text-3xl pr-4 md:text-7xl lg:text-8xl font-sans font-black uppercase tracking-tighter leading-[0.8] flex flex-col"
+              className="text-5xl md:text-7xl lg:text-8xl font-sans font-black uppercase tracking-tighter leading-[0.8] flex flex-col"
               style={{ backfaceVisibility: "hidden" }}
             >
               <span className="block overflow-hidden px-4">
@@ -135,11 +141,23 @@ export default function StickySection() {
             </h2>
           </div>
         </div>
-        
+
         <div className="w-full md:w-1/2 flex flex-col items-center justify-center gap-20 md:gap-[80vh] pt-20 md:pt-96 md:pb-[100vh]">
-          <StepContent number="01" title="Strategy" text="Deep diving into your brand..." />
-          <StepContent number="02" title="Design" text="Translating strategy into visual language..." />
-          <StepContent number="03" title="Launch" text="Deploying the vision and scaling it..." />
+          <StepContent
+            number="01"
+            title="Strategy"
+            text="Deep diving into your brand to find the unique angle that makes people stop and stare."
+          />
+          <StepContent
+            number="02"
+            title="Design"
+            text="Translating strategy into visual language. We don't just make it pretty; we make it work."
+          />
+          <StepContent
+            number="03"
+            title="Launch"
+            text="Deploying the vision and scaling it. This is where your brand meets the real world."
+          />
         </div>
       </div>
     </section>
