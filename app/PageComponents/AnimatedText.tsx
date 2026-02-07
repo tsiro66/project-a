@@ -41,7 +41,7 @@ export default function AnimatedText() {
             gsap.from(words, {
               y: 40,
               autoAlpha: 0,
-              stagger: 1,
+              stagger: 0.5,
               duration: 0.5,
               force3D: true,
               scrollTrigger: {

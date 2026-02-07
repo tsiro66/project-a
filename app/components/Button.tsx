@@ -31,7 +31,7 @@ export default function Button({
       <button
         type={type}
         onClick={onClick}
-        className={`group relative overflow-hidden bg-lime-400 text-zinc-950 transition-all duration-300 ease-in-out pointer-events-auto 
+        className={`group relative bg-lime-400 text-zinc-950 transition-all duration-300 ease-in-out pointer-events-auto 
             cursor-pointer flex items-center justify-center font-syne ${variantStyles[variant]} ${className}`}
       >
         <span className="relative z-10">{children}</span>

@@ -1,0 +1,13 @@
+{
+  "Hero": {
+    "title": "Do you want your page to",
+    "italic": " impress ?"
+  },
+  "Navbar": {
+    "menu": "Menu",
+    "close": "Close",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  }
+}

@@ -7,14 +7,23 @@ import gsap from "gsap";
 import Button from "./Button";
 import { MessageCircle } from "lucide-react";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import LocaleSwitcher from "./LocaleSwitcher";
+import { useAnimationReady } from "../contexts/AnimationContext";
+import changeLocaleAction from "../actions/ChangeLocaleAction";
+import { useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function Navbar() {
+  const { canAnimate } = useAnimationReady();
   const bannerRef = useRef(null);
   const navRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("Navbar");
+
+  // This acts as a trigger for the animation whenever the language changes
+  const currentLocaleKey = t("home");
 
   const scrollToContact = () => {
     if (isOpen) setIsOpen(false);
@@ -37,12 +46,19 @@ export default function Navbar() {
   // 1. Initial Entry & Scroll Animations
   useGSAP(
     () => {
-      gsap.from(navRef.current, {
-        y: -100,
-        opacity: 0,
-        duration: 1.5,
-        ease: "power4.out",
-      });
+      if (!canAnimate) return;
+
+      gsap.fromTo(
+        navRef.current,
+        { y: -100, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: "power4.out",
+          delay: 0.2,
+        }
+      );
 
       gsap.to(bannerRef.current, {
         y: -50,
@@ -56,15 +72,14 @@ export default function Navbar() {
         },
       });
     },
-    { scope: navRef }
+    { scope: navRef, dependencies: [canAnimate] }
   );
 
-  // 2. Optimized Toggle Animation
+  // 2. Optimized Toggle Animation (Menu Open/Close)
   useGSAP(
     () => {
       if (!panelRef.current) return;
 
-      // Αν ανοίγει, κλειδώνουμε το scroll αμέσως
       if (isOpen) {
         document.body.style.overflow = "hidden";
       }
@@ -75,10 +90,9 @@ export default function Navbar() {
         borderRadius: isOpen ? "1rem" : "0.5rem",
         paddingBottom: isOpen ? "3rem" : "0rem",
         duration: 0.7,
-        ease: "expo.inOut", // Πιο ομαλό για αλλαγές μεγέθους
-        force3D: true, // GPU Acceleration
+        ease: "expo.inOut",
+        force3D: true,
         onComplete: () => {
-          // Επαναφορά του scroll ΜΟΝΟ όταν τελειώσει το κλείσιμο
           if (!isOpen) {
             document.body.style.overflow = "auto";
           }
@@ -88,15 +102,41 @@ export default function Navbar() {
     { dependencies: [isOpen], scope: navRef }
   );
 
+  // 3. Smooth Text Animation on Locale Change
+  useGSAP(
+    () => {
+      if (!isOpen) return;
+
+      // Animates the menu items whenever the locale changes while menu is open
+      gsap.fromTo(
+        ".nav-item",
+        { 
+          y: 30, 
+          opacity: 0,
+          rotateX: -20
+        },
+        {
+          y: 0,
+          opacity: 1,
+          rotateX: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "expo.out",
+          overwrite: "auto",
+        }
+      );
+    },
+    { dependencies: [currentLocaleKey, isOpen], scope: navRef }
+  );
+
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 w-full z-50 p-4 md:p-6 flex flex-col items-center pointer-events-none"
+      className="fixed top-0 left-0 w-full z-50 p-4 md:p-6 flex flex-col items-center pointer-events-none opacity-0 -translate-y-full"
     >
-      {/* Main Navbar Bar */}
       <div
         ref={panelRef}
-        className="w-full flex flex-col items-center bg-zinc-900 px-4 overflow-hidden rounded-lg pointer-events-auto"
+        className="w-full flex flex-col items-center bg-zinc-900 px-4 rounded-lg pointer-events-auto shadow-2xl"
         style={{ willChange: "width, height", transform: "translateZ(0)" }}
       >
         {/* Header Row */}
@@ -104,7 +144,7 @@ export default function Navbar() {
           {/* Left: Menu Button */}
           <button
             onClick={() => setIsOpen((prev) => !prev)}
-            className="flex items-center gap-2 group pointer-events-auto cursor-pointer text-white z-10"
+            className="nav-item flex items-center gap-2 group pointer-events-auto cursor-pointer text-white z-10"
           >
             <div className="relative w-7 h-5 flex flex-col justify-center items-start">
               <span
@@ -116,25 +156,28 @@ export default function Navbar() {
                 ${isOpen ? "w-6 -rotate-45" : "w-7 translate-y-1.5"}`}
               ></span>
             </div>
-            <span className="text-xl font-medium hidden md:block font-syne">
-              {isOpen ? "Κλείσιμο" : "Μενού"}
+            <span className=" text-xl font-medium hidden md:block font-syne">
+              {isOpen ? t("close") : t("menu")}
             </span>
           </button>
 
           {/* Center: Logo */}
-          <div className="absolute left-1/2 -translate-x-1/2 text-white" onClick={scrollToHero}>
+          <div
+            className="absolute left-1/2 -translate-x-1/2 text-white"
+            onClick={scrollToHero}
+          >
             <span className="text-xl md:text-3xl font-syne font-black tracking-wider uppercase pointer-events-auto cursor-pointer">
               FLUX
             </span>
           </div>
 
           {/* Right: Action Button */}
-          <div onClick={scrollToContact} className="pointer-events-auto">
+          <div onClick={scrollToContact} className="nav-item pointer-events-auto">
             <Button
               variant="nav"
               icon={<MessageCircle className="w-4 h-4 md:w-5 md:h-5 ml-2" />}
             >
-              <span>Επικοινωνία</span>
+              <span>{t("contact")}</span>
             </Button>
           </div>
         </div>
@@ -142,18 +185,21 @@ export default function Navbar() {
         {/* Expanded Content */}
         {isOpen && (
           <div className="w-full flex-1 flex flex-col items-center justify-center pointer-events-auto">
-             {/* Εδώ μπαίνουν τα links σου */}
-             <div className="flex flex-col gap-8 text-center">
-                <span className="text-white text-4xl font-syne font-black uppercase opacity-0 animate-in fade-in slide-in-from-bottom-4 duration-500 fill-mode-forwards">
-                  Work
-                </span>
-                <span className="text-white text-4xl font-syne font-black uppercase opacity-0 animate-in fade-in slide-in-from-bottom-4 delay-150 duration-500 fill-mode-forwards">
-                  About
-                </span>
-                <span className="text-white text-4xl font-syne font-black uppercase opacity-0 animate-in fade-in slide-in-from-bottom-4 delay-300 duration-500 fill-mode-forwards">
-                  Services
-                </span>
-             </div>
+            {/* The Key forces a re-mount or fresh state for animations when locale flips */}
+            <div key={currentLocaleKey} className="flex flex-col gap-8 text-center" style={{ perspective: "1000px" }}>
+              <span className="nav-item text-white text-4xl md:text-6xl font-syne font-black uppercase block">
+                {t("home")}
+              </span>
+              <span className="nav-item text-white text-4xl md:text-6xl font-syne font-black uppercase block">
+                {t("about")}
+              </span>
+              <span className="nav-item text-white text-4xl md:text-6xl font-syne font-black uppercase block">
+                {t("contact")}
+              </span>
+              <div className="mt-4 transition ease-in-out">
+                <LocaleSwitcher changeLocaleAction={changeLocaleAction} />
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -161,7 +207,9 @@ export default function Navbar() {
       {/* Floating Ticker */}
       <div
         ref={bannerRef}
-        className={`mt-3 w-full max-w-3xl -z-10 transition-all duration-500 ${isOpen ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
+        className={`mt-3 w-full max-w-3xl -z-10 transition-all duration-500 ${
+          isOpen ? "opacity-0 scale-95" : "opacity-100 scale-100"
+        }`}
       >
         <div className="bg-lime-400 py-1 rounded-lg flex whitespace-nowrap overflow-hidden shadow-2xl">
           <div className="flex animate-marquee shrink-0">
@@ -179,12 +227,11 @@ export default function Navbar() {
 function MarqueeContent() {
   return (
     <>
-      <span className="text-[10px] md:text-xs font-medium uppercase px-6 text-zinc-900">Web Development</span>
-      <span className="text-[10px] md:text-xs font-medium uppercase px-6 text-zinc-900">•</span>
-      <span className="text-[10px] md:text-xs font-medium uppercase px-6 text-zinc-900">E-commerce</span>
-      <span className="text-[10px] md:text-xs font-medium uppercase px-6 text-zinc-900">•</span>
-      <span className="text-[10px] md:text-xs font-medium uppercase px-6 text-zinc-900">Digital Marketing</span>
-      <span className="text-[10px] md:text-xs font-medium uppercase px-6 text-zinc-900">•</span>
+      {["Web Development", "•", "E-commerce", "•", "Digital Marketing", "•"].map((text, i) => (
+        <span key={i} className="text-[10px] md:text-xs font-medium uppercase px-6 text-zinc-900">
+          {text}
+        </span>
+      ))}
     </>
   );
 }

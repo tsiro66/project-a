@@ -50,7 +50,7 @@ export default function Contact() {
     <section
       id="contact-section"
       ref={container}
-      className="bg-zinc-950 h-screen py-24 px-6 md:px-12 lg:px-24 text-white flex items-center"
+      className="bg-zinc-950 min-h-screen py-24 px-6 md:px-12 lg:px-24 text-white flex items-center"
     >
       <div className="max-w-7xl mx-auto w-full">
         {/* Section Header */}
