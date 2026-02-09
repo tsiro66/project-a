@@ -22,7 +22,7 @@ export default function Button({
   
   // Define base styles for different variants
   const variantStyles = {
-    default: "px-6 py-2 text-lg md:text-2xl rounded-full tracking-tighter uppercase font-bold",
+    default: "px-6 py-2 md:text-xl rounded-full tracking-tighter uppercase font-syne font-black",
     nav: "px-3 md:px-5 h-7 text-xs md:text-lg rounded-3xl font-medium hover:rounded-lg"
   };
 

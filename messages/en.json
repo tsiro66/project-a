@@ -1,13 +1,82 @@
 {
   "Hero": {
-    "title": "Do you want your page to",
-    "italic": " impress ?"
+    "title": "Do you want your site to",
+    "italic": " impress?"
   },
   "Navbar": {
     "menu": "Menu",
     "close": "Close",
+    "contact": "Contact",
     "home": "Home",
-    "about": "About",
-    "contact": "Contact"
+    "services": "Services",
+    "process": "Process"
+  },
+  "AnimatedText": {
+    "content": "THE POWER OF DESIGN MEETS THE EDGE OF TECHNOLOGY. WE CRAFT <span class=\"destructive-text text-lime-400\">DIGITAL PRODUCTS THAT STAND OUT.</span> FROM THE FIRST GLANCE. DOWN TO THE LAST PIXEL."
+  },
+  "StickySection": {
+    "title": "Services",
+    "first": {
+      "title": "Websites",
+      "description": "We provide bespoke web development solutions for businesses and individuals across diverse sectors. Whether you need a sleek presentation site or a dynamic blog, we have the expertise to create a digital presence that exceeds your needs and stands out in the digital landscape."
+    },
+    "second": {
+      "title": "E-commerce",
+      "description": "Just provide your logo—or let us design one for you for free—and let us take the lead. We deliver high-end e-shops built to international standards, allowing you to start selling online effortlessly and without hassle. Professional, seamless, and results-driven."
+    },
+    "third": {
+      "title": "Custom Apps",
+      "description": "We redesign critical business processes and boost performance with custom applications. A tailored app offers unique functionalities that off-the-shelf solutions lack, creating a competitive advantage and significantly improving your team's productivity."
+    }
+  },
+  "Cards": {
+    "intro": {
+      "title": "Our Process",
+      "description": "From initial concept to final deployment, we follow a structured path to ensure your project's absolute success."
+    },
+    "first": {
+      "title": "Consultation",
+      "description": "We analyze your goals and lay the strategic foundation to transform your vision into a tangible digital roadmap."
+    },
+    "second": {
+      "title": "Design",
+      "description": "We create unique prototypes focusing on user experience (UX) and aesthetic excellence (UI) that represents your brand."
+    },
+    "third": {
+      "title": "Development",
+      "description": "We translate design into high-performance code using modern technologies, ensuring maximum speed and responsiveness."
+    },
+    "fourth": {
+      "title": "Refinement",
+      "description": "We work with you through successive revision stages until you are 100% satisfied with every detail of the project."
+    },
+    "fifth": {
+      "title": "Delivery",
+      "description": "Your project goes live! We stay by your side for support, ensuring the smooth operation of your new digital asset."
+    }
+  },
+  "Contact": {
+    "title": "Let's build",
+    "subtitle": "something great",
+    "placeholderName": "Your Name",
+    "placeholderEmail": "Your Email Address",
+    "placeholderMessage": "Tell us about your project",
+    "button": "Send Inquiry"
+  },
+  "Footer": {
+    "navTitle": "01 / Navigation",
+    "navLinks": {
+      "home": "Home",
+      "services": "Services",
+      "process": "Process",
+      "contact": "Contact"
+    },
+    "contactTitle": "02 / Contact",
+    "availabilityTitle": "03 / Availability",
+    "availableStatus": "Available for new projects",
+    "bigTextStart": "Impress",
+    "bigTextEnd": "with your site",
+    "cyclingWords": ["EVERYONE", "THE MARKET", "YOUR CLIENTS"],
+    "builtToImpress": "Built to Impress"
   }
 }

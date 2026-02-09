@@ -1,7 +1,7 @@
 "use client";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 const WORDS = ["DESIGNING...", "CODING...", "EVOLVING...", "F L U X"];
 const CHARS = "!<>-_\\/[]{}—=+*^?#________";

@@ -3,6 +3,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl"; // Import translations
 import Button from "../components/Button";
 
 if (typeof window !== "undefined") {
@@ -12,17 +13,17 @@ if (typeof window !== "undefined") {
 export default function Contact() {
   const container = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const t = useTranslations("Contact"); // Initialization
 
   useGSAP(
     () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container.current,
-          start: "top 80%", // Starts when the section enters the view
+          start: "top 80%",
         },
       });
 
-      // Animate the section title
       tl.from(".contact-title", {
         y: 100,
         opacity: 0,
@@ -30,7 +31,6 @@ export default function Contact() {
         duration: 1.2,
         ease: "power4.out",
       })
-        // Stagger the input lines rising up
         .from(
           ".form-row",
           {
@@ -56,8 +56,10 @@ export default function Contact() {
         {/* Section Header */}
         <div className="overflow-hidden mb-16 mt-16">
           <h2 className="contact-title text-5xl md:text-8xl font-bold uppercase tracking-tighter">
-            Let&apos;s build <br />
-            <span className="text-lime-400 italic">something great</span>
+            {t("title")} <br />
+            <span className="text-lime-400 italic destructive-text">
+              {t("subtitle")}
+            </span>
           </h2>
         </div>
 
@@ -72,7 +74,7 @@ export default function Contact() {
             </label>
             <input
               type="text"
-              placeholder="Your Name"
+              placeholder={t("placeholderName")}
               className="bg-transparent text-2xl md:text-3xl outline-none placeholder:text-zinc-700"
             />
           </div>
@@ -84,7 +86,7 @@ export default function Contact() {
             </label>
             <input
               type="email"
-              placeholder="Email Address"
+              placeholder={t("placeholderEmail")}
               className="bg-transparent text-2xl md:text-3xl outline-none placeholder:text-zinc-700"
             />
           </div>
@@ -96,16 +98,16 @@ export default function Contact() {
             </label>
             <textarea
               rows={2}
-              placeholder="Tell us about your project"
+              placeholder={t("placeholderMessage")}
               className="bg-transparent text-2xl md:text-3xl outline-none placeholder:text-zinc-700 resize-none"
             />
           </div>
 
           {/* Submit Button */}
           <div className="form-row md:col-span-2 flex justify-center md:justify-end">
-              <Button type="submit">
-                <span className="relative z-10">Send Inquiry</span>
-              </Button>
+            <Button type="submit">
+              <span className="relative z-10">{t("button")}</span>
+            </Button>
           </div>
         </form>
       </div>

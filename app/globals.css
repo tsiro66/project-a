@@ -39,27 +39,34 @@ body {
   font-family: var(--font-inter), serif;
 }
 
+
+.destructive-text {
+  color: #a3e635; /* tailwind lime-400 */
+  text-shadow: 
+    0 0 12px rgba(163, 230, 53, 0.6), 
+    0 0 25px rgba(163, 230, 53, 0.2);
+}
+
 /* If you want a 'sticky' reveal feel */
 footer {
   position: sticky;
   bottom: 0;
   z-index: -1;
 }
-/* Hide scrollbar */
-
-:root {
-  scrollbar-width: none !important; /* Firefox */
-  -ms-overflow-style: none !important; /* IE and Edge */
-}
 
 ::-webkit-scrollbar {
-  width: 0px !important;
-  height: 0px !important;
-  display: none !important; /* Chrome, Safari, and Opera */
+  width: 6px; /* Πολύ λεπτό για να μην ενοχλεί το design */
 }
 
-/* Ensure body and html don't force a scrollbar display */
-html, body {
-  -webkit-overflow-scrolling: touch;
+::-webkit-scrollbar-track {
+  background: #09090b; 
 }
 
+::-webkit-scrollbar-thumb {
+  background: #a3e635;
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #86bf2b; /* Το lime σου */
+}

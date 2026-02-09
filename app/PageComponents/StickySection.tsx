@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import StepContent from "../components/StepContent";
+import { useTranslations } from "next-intl";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -14,6 +15,7 @@ export default function StickySection() {
   const leftColumnRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const t = useTranslations("StickySection");
 
   // Helper to split text - Προσθήκη GPU hint (will-change)
   const splitText = (text: string) => {
@@ -113,6 +115,7 @@ export default function StickySection() {
 
   return (
     <section
+      id="services-section"
       ref={containerRef}
       className="relative w-full bg-lime-400 text-black py-20 overflow-hidden"
     >
@@ -136,7 +139,7 @@ export default function StickySection() {
               style={{ backfaceVisibility: "hidden" }}
             >
               <span className="block overflow-hidden px-4">
-                {splitText("Υπηρεσιες")}
+                {splitText(t("title"))}
               </span>
             </h2>
           </div>
@@ -145,18 +148,18 @@ export default function StickySection() {
         <div className="w-full md:w-1/2 flex flex-col items-center justify-center gap-20 md:gap-[80vh] pt-20 md:pt-96 md:pb-[100vh]">
           <StepContent
             number="01"
-            title="Strategy"
-            text="Deep diving into your brand to find the unique angle that makes people stop and stare."
+            title={t("first.title")}
+            text={t("first.description")}
           />
           <StepContent
             number="02"
-            title="Design"
-            text="Translating strategy into visual language. We don't just make it pretty; we make it work."
+            title={t("second.title")}
+            text={t("second.description")}
           />
           <StepContent
             number="03"
-            title="Launch"
-            text="Deploying the vision and scaling it. This is where your brand meets the real world."
+            title={t("third.title")}
+            text={t("third.description")}
           />
         </div>
       </div>

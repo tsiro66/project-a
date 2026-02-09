@@ -4,23 +4,24 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export default function AnimatedText() {
   const container = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-
-  const rawContent = `Η ΕΠΙΧΕΙΡΗΣΗ ΣΟΥ ΔΕΝ ΕΙΝΑΙ TEMPLATE. ΓΙΑΤΙ ΝΑ ΕΙΝΑΙ ΤΟ SITE ΣΟΥ? ΣΤΗ FLUX <span class="text-lime-400">ΚΑΤΑΣΤΡΕΦΟΥΜΕ ΤΟ ΣΥΝΗΘΙΣΜΕΝΟ.</span> 
-  DESIGN ΠΟΥ ΣΟΚΑΡΕΙ, ΚΩΔΙΚΑΣ ΠΟΥ ΠΟΥΛΑΕΙ.`;
+  const t = useTranslations("AnimatedText");
+  const content = t.raw("content");
 
   useGSAP(
     () => {
-      // Δημιουργούμε το SplitText ΕΚΤΟΣ του matchMedia για να είναι έτοιμο
+      // If content is empty or ref is missing, bail
+      if (!textRef.current) return;
+
       const split = new SplitText(textRef.current, { type: "words, lines" });
       const words = split.words;
 
-      // Προσθέτουμε GPU acceleration στα words αμέσως
       gsap.set(words, {
         transformPerspective: 1000,
         backfaceVisibility: "hidden",
@@ -37,17 +38,17 @@ export default function AnimatedText() {
           const { isDesktop } = context.conditions as { isDesktop: boolean };
 
           if (isDesktop) {
-            // DESKTOP: Scrub animation για λέξη-λέξη
             gsap.from(words, {
               y: 40,
               autoAlpha: 0,
-              stagger: 0.5,
-              duration: 0.5,
+              stagger: 0.07,
+              duration: 1,
+              ease: "power2.out",
               force3D: true,
               scrollTrigger: {
                 trigger: container.current,
                 start: "top 50%",
-                end: "bottom 100%",
+                end: "bottom 70%",
                 scrub: true,
               },
             });
@@ -55,8 +56,8 @@ export default function AnimatedText() {
             gsap.from(words, {
               y: 20,
               autoAlpha: 0,
-              stagger: 0.07,
-              duration: 0.2,
+              stagger: 0.05,
+              duration: 0.4,
               ease: "power2.out",
               force3D: true,
               scrollTrigger: {
@@ -71,19 +72,22 @@ export default function AnimatedText() {
 
       return () => split.revert();
     },
-    { scope: container },
+    // Adding content to dependencies ensures GSAP recalculates on lang change
+    { scope: container, dependencies: [content] },
   );
 
   return (
     <div
       ref={container}
-      className="min-h-screen flex items-center justify-center p-10 md:p-30 uppercase bg-zinc-950 text-zinc-100 overflow-hidden"
+      className="min-h-screen flex items-center justify-center p-5 md:p-30 uppercase bg-zinc-950 text-zinc-100 overflow-hidden"
     >
       <div
         ref={textRef}
+        // KEY FIX: The key ensures the DOM node is fresh for SplitText when content changes
+        key={content}
         className="text-xl md:text-4xl lg:text-5xl text-center font-syne font-black leading-tight tracking-tighter"
         style={{ willChange: "transform" }}
-        dangerouslySetInnerHTML={{ __html: rawContent }}
+        dangerouslySetInnerHTML={{ __html: content }}
       />
     </div>
   );
