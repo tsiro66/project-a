@@ -16,10 +16,12 @@ export default function StickySection() {
   const lineRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const t = useTranslations("StickySection");
+  
+  // Get the string to use as a dependency for the hook
+  const titleText = t("title");
 
-  // Helper to split text - Προσθήκη GPU hint (will-change)
   const splitText = (text: string) => {
-    return text.split("").map((char, i) => (
+    return text.trim().split("").map((char, i) => (
       <span
         key={i}
         className="char inline-block translate-y-full will-change-transform"
@@ -30,88 +32,101 @@ export default function StickySection() {
   };
 
   useGSAP(
-    () => {
-      const mm = gsap.matchMedia();
+  () => {
+    const mm = gsap.matchMedia();
+    const chars = titleRef.current?.querySelectorAll(".char");
 
-      // --- 1. CHARACTER REVEAL ---
-      const chars = titleRef.current?.querySelectorAll(".char");
-      if (chars) {
-        gsap.to(chars, {
+    // --- 1. CHARACTER REVEAL ---
+    // Using fromTo ensures that even if the component re-renders, 
+    // the starting position is forced back to 110%
+    if (chars && chars.length > 0) {
+      gsap.fromTo(chars, 
+        { y: "110%", opacity: 0 }, 
+        {
           y: 0,
+          opacity: 1,
           stagger: 0.05,
           duration: 0.8,
           ease: "power3.out",
-          force3D: true, // GPU Acceleration
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top 70%",
-            toggleActions: "play none none reverse", // Όχι scrub εδώ, είναι βαρύ για γράμματα
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+            // invalidateOnRefresh ensures it recalculates if the page size changes
+            invalidateOnRefresh: true, 
           },
-        });
-      }
+        }
+      );
+    }
 
-      // --- 2. DESKTOP PARALLAX ---
-      mm.add("(min-width: 768px)", () => {
-        ScrollTrigger.create({
-          trigger: leftColumnRef.current,
-          start: "top top",
-          endTrigger: containerRef.current,
-          end: "bottom bottom",
-          pin: true,
-          pinSpacing: false,
-        });
+    // --- 2. DESKTOP PARALLAX ---
+    mm.add("(min-width: 768px)", () => {
+      // Pinning the left column
+      ScrollTrigger.create({
+        trigger: leftColumnRef.current,
+        start: "top top",
+        endTrigger: containerRef.current,
+        end: "bottom bottom",
+        pin: true,
+        pinSpacing: false,
+        id: "left-pin" // Adding IDs helps GSAP keep track
+      });
 
-        const tl = gsap.timeline({
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top center",
+          end: "bottom center",
+          scrub: true,
+          id: "parallax-scroll"
+        },
+      });
+
+      tl.fromTo(
+        lineRef.current,
+        { scaleY: 0, transformOrigin: "top" },
+        { scaleY: 4, duration: 1, ease: "none" },
+        0
+      )
+      .to(
+        titleRef.current,
+        { y: 800, duration: 1, ease: "none" },
+        0
+      )
+      .to(
+        lineRef.current,
+        { y: 1000, duration: 0.5, ease: "none" },
+        0.5
+      );
+    });
+
+    // --- 3. MOBILE ---
+    mm.add("(max-width: 767px)", () => {
+      gsap.fromTo(
+        lineRef.current,
+        { scaleX: 0, transformOrigin: "left" },
+        {
+          scaleX: 1,
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top center",
-            end: "bottom center",
+            start: "top 20%",
+            end: "bottom bottom",
             scrub: true,
           },
-        });
+        }
+      );
+    });
 
-        tl.fromTo(
-          lineRef.current,
-          { scaleY: 0, transformOrigin: "top" },
-          { scaleY: 4, duration: 1, ease: "none", force3D: true },
-          0,
-        )
-          .to(
-            titleRef.current,
-            { y: 800, duration: 1, ease: "none", force3D: true },
-            0,
-          )
-          .to(
-            lineRef.current,
-            { y: 1000, duration: 0.5, ease: "none", force3D: true },
-            0.5,
-          );
-      });
+    // Refresh triggers to ensure all heights (including the right column) are correct
+    ScrollTrigger.refresh();
 
-      // --- 3. MOBILE ONLY (Optimized) ---
-      mm.add("(max-width: 767px)", () => {
-        // Αφαιρούμε το scrub αν κολλάει πολύ, ή το κρατάμε μόνο για την απλή γραμμή
-        gsap.fromTo(
-          lineRef.current,
-          { scaleX: 0, transformOrigin: "left" },
-          {
-            scaleX: 1,
-            ease: "none",
-            force3D: true,
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top 20%",
-              end: "bottom bottom",
-              scrub: true, // Η γραμμή είναι ελαφρύ element, το scrub αντέχεται
-            },
-          },
-        );
-      });
-
-      return () => mm.revert();
-    },
-    { scope: containerRef },
-  );
+  },
+  { 
+    scope: containerRef, 
+    dependencies: [titleText], 
+    revertOnUpdate: true 
+  }
+);
 
   return (
     <section
@@ -124,9 +139,7 @@ export default function StickySection() {
           className="w-full md:w-1/2 h-fit flex flex-col justify-start"
           ref={leftColumnRef}
         >
-          {/* 1. Center everything on mobile, align start on desktop */}
           <div className="flex flex-col md:flex-row md:items-start items-center text-center md:text-left gap-0 md:gap-10">
-            {/* 2. Hidden on mobile, block on desktop */}
             <div
               ref={lineRef}
               className="hidden md:block md:w-2.5 md:h-60 bg-zinc-900 rounded-xs md:origin-top"
@@ -138,8 +151,9 @@ export default function StickySection() {
               className="text-5xl md:text-7xl lg:text-8xl font-sans font-black uppercase tracking-tighter leading-[0.8] flex flex-col"
               style={{ backfaceVisibility: "hidden" }}
             >
-              <span className="block overflow-hidden px-4">
-                {splitText(t("title"))}
+              {/* Added pb-4 to prevent the last letter's descender from being clipped */}
+              <span className="block overflow-hidden px-4 pb-4 -mb-4">
+                {splitText(titleText)}
               </span>
             </h2>
           </div>
