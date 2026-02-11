@@ -18,7 +18,6 @@ export default function AnimatedText() {
     () => {
       // If content is empty or ref is missing, bail
       if (!textRef.current) return;
-
       const split = new SplitText(textRef.current, { type: "words, lines" });
       const words = split.words;
 
@@ -83,7 +82,6 @@ export default function AnimatedText() {
     >
       <div
         ref={textRef}
-        // KEY FIX: The key ensures the DOM node is fresh for SplitText when content changes
         key={content}
         className="text-xl md:text-4xl lg:text-5xl text-center font-syne font-black leading-tight tracking-tighter"
         style={{ willChange: "transform" }}

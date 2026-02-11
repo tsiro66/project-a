@@ -8,14 +8,14 @@ import Button from "./Button";
 import { MessageCircle } from "lucide-react";
 import { useLenis } from "lenis/react";
 import LocaleSwitcher from "./LocaleSwitcher";
-import { useAnimationReady } from "../contexts/AnimationContext/AnimationContext";
+// import { useAnimationReady } from "../contexts/AnimationContext/AnimationContext";
 import changeLocaleAction from "../actions/ChangeLocaleAction";
 import { useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar() {
-  const { canAnimate } = useAnimationReady();
+  // const { canAnimate } = useAnimationReady();
   const lenis = useLenis();
   const bannerRef = useRef(null);
   const navRef = useRef(null);
@@ -41,7 +41,7 @@ export default function Navbar() {
   // Entry Animation
   useGSAP(
     () => {
-      if (!canAnimate) return;
+      // if (!canAnimate) return;
 
       gsap.fromTo(
         navRef.current,
@@ -67,7 +67,7 @@ export default function Navbar() {
         },
       });
     },
-    { scope: navRef, dependencies: [canAnimate] },
+    { scope: navRef },
   );
 
   // Panel Toggle Animation

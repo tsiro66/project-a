@@ -29,7 +29,6 @@ export default function Footer() {
   const scrollToSection = (id: string) => {
     lenis?.scrollTo(id, {
       duration: 1.5,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
   };
 

@@ -3,7 +3,6 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { useAnimationReady } from "../contexts/AnimationContext/AnimationContext"; // 1. Import context
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollToPlugin);
@@ -11,12 +10,9 @@ if (typeof window !== "undefined") {
 
 export default function ScrollIndicator() {
   const container = useRef<HTMLButtonElement>(null);
-  const { canAnimate } = useAnimationReady(); // 2. Consume the green light
+
 
   useGSAP(() => {
-    // 3. Guard clause: Don't run any animations until canAnimate is true
-    if (!canAnimate) return;
-
     // Entrance animation (Removed the hardcoded delay)
     gsap.fromTo(
       container.current,
@@ -43,7 +39,7 @@ export default function ScrollIndicator() {
       ease: "sine.inOut",
       stagger: 0.2
     });
-  }, { scope: container, dependencies: [canAnimate] }); // 4. Add dependency here
+  }, { scope: container });
 
   const scrollToContent = () => {
     // GSAP ScrollTo gives you full control

@@ -5,32 +5,23 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
-import { useAnimationReady } from "../contexts/AnimationContext/AnimationContext";
+// import { useAnimationReady } from "../contexts/AnimationContext/AnimationContext";
 import ScrollIndicator from "../components/ScrollIndicator";
+import Image from "next/image";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 export default function Hero() {
-  const { canAnimate } = useAnimationReady();
+  // const { canAnimate } = useAnimationReady();
   const container = useRef<HTMLDivElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null); // Ref to control the video API
   const t = useTranslations("Hero");
 
   useGSAP(
     () => {
-      if (!canAnimate) return;
-
-      // Start video playback when animation is allowed
-      if (videoRef.current) {
-        videoRef.current.play().catch((err) => {
-          console.warn("Video autoplay was prevented by browser:", err);
-        });
-      }
-
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
       tl.to(bgRef.current, {
@@ -41,14 +32,20 @@ export default function Hero() {
         .fromTo(
           ".hero-text",
           { y: 100, opacity: 0, filter: "blur(10px)" },
-          { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.5, stagger: 0.2 },
-          "-=1.2"
+          {
+            y: 0,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 1.5,
+            stagger: 0.2,
+          },
+          "-=1.2",
         )
         .fromTo(
           ".hero-subtext",
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 1 },
-          "-=0.8"
+          "-=0.8",
         );
 
       const handleMouseMove = (e: MouseEvent) => {
@@ -79,7 +76,7 @@ export default function Hero() {
       window.addEventListener("mousemove", handleMouseMove);
       return () => window.removeEventListener("mousemove", handleMouseMove);
     },
-    { scope: container, dependencies: [canAnimate] }
+    { scope: container },
   );
 
   return (
@@ -88,21 +85,17 @@ export default function Hero() {
       ref={container}
       className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Video Background Container */}
       <div
         ref={bgRef}
         className="absolute inset-0 w-full h-full scale-[1.3] brightness-0 will-change-transform"
       >
-        <video
-          ref={videoRef}
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src="/bg-video.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        <Image
+          src="/hero-image.webp"
+          fill
+          priority
+          className="object-cover"
+          alt="Hero Image"
+        />
         {/* Overlay Gradients */}
         <div className="absolute inset-0 bg-linear-to-b from-black/40 via-transparent to-black/60" />
       </div>
