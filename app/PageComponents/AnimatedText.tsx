@@ -12,12 +12,17 @@ export default function AnimatedText() {
   const container = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("AnimatedText");
-  const content = t.raw("content");
+
+  // Get translations as strings
+  const part1 = t("part1");
+  const highlight = t("highlight");
+  const part2 = t("part2");
 
   useGSAP(
     () => {
-      // If content is empty or ref is missing, bail
       if (!textRef.current) return;
+
+      // SplitText works perfectly on nested spans
       const split = new SplitText(textRef.current, { type: "words, lines" });
       const words = split.words;
 
@@ -71,8 +76,8 @@ export default function AnimatedText() {
 
       return () => split.revert();
     },
-    // Adding content to dependencies ensures GSAP recalculates on lang change
-    { scope: container, dependencies: [content] },
+    // Dependency array updated to track all parts
+    { scope: container, dependencies: [part1, highlight, part2] },
   );
 
   return (
@@ -82,11 +87,15 @@ export default function AnimatedText() {
     >
       <div
         ref={textRef}
-        key={content}
         className="text-xl md:text-4xl lg:text-5xl text-center font-syne font-black leading-tight tracking-tighter"
         style={{ willChange: "transform" }}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+      >
+        {part1}{" "}
+        <span className="text-lime-400 highlighted-text">
+          {highlight}
+        </span>{" "}
+        {part2}
+      </div>
     </div>
   );
 }

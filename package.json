@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "@react-email/components": "^1.0.7",
+    "@react-email/render": "^2.0.4",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@react-three/postprocessing": "^3.0.4",
@@ -22,6 +24,7 @@
     "postprocessing": "^6.38.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "resend": "^6.9.2",
     "three": "^0.182.0"
   },
   "devDependencies": {

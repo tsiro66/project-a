@@ -1,7 +1,7 @@
 {
   "Hero": {
-    "title": "Do you want your site to",
-    "italic": " impress?"
+    "title": "You want the best for your business?",
+    "cyclingWords": ["Websites", "E-shop", "Software", "Mobile apps"]
   },
   "Navbar": {
     "menu": "Menu",
@@ -12,7 +12,9 @@
     "process": "Process"
   },
   "AnimatedText": {
-    "content": "THE POWER OF DESIGN MEETS THE EDGE OF TECHNOLOGY. WE CRAFT <span class=\"destructive-text text-lime-400\">DIGITAL PRODUCTS THAT STAND OUT.</span> FROM THE FIRST GLANCE. DOWN TO THE LAST PIXEL."
+    "part1": "THE POWER OF DESIGN MEETS THE EDGE OF TECHNOLOGY. WE CRAFT",
+    "highlight": "DIGITAL PRODUCTS THAT STAND OUT.",
+    "part2": "FROM THE FIRST GLANCE. DOWN TO THE LAST PIXEL."
   },
   "StickySection": {
     "title": "Services",
@@ -22,7 +24,7 @@
     },
     "second": {
       "title": "E-commerce",
-      "description": "Just provide your logo—or let us design one for you for free—and let us take the lead. We deliver high-end e-shops built to international standards, allowing you to start selling online effortlessly and without hassle. Professional, seamless, and results-driven."
+      "description": "Just provide your logo or let us design one for you for free and let us take the lead. We deliver high-end e-shops built to international standards, allowing you to start selling online effortlessly and without hassle. Professional, seamless, and results-driven."
     },
     "third": {
       "title": "Custom Software",
@@ -56,12 +58,18 @@
     }
   },
   "Contact": {
-    "title": "Let's build",
-    "subtitle": "something great",
-    "placeholderName": "Your Name",
-    "placeholderEmail": "Your Email Address",
-    "placeholderMessage": "Tell us about your project",
-    "button": "Send Inquiry"
+    "title": "Let’s create",
+    "subtitle": "something unique",
+    "labelName": "Name",
+    "labelPhone": "Phone",
+    "labelEmail": "Email",
+    "labelBudget": "Budget",
+    "labelMessage": "Message",
+    "placeholderName": "Your name",
+    "placeholderPhone": "Your phone number",
+    "placeholderEmail": "Your email address",
+    "placeholderMessage": "Tell us about you and your project",
+    "button": "Send"
   },
   "Footer": {
     "navTitle": "01 / Navigation",

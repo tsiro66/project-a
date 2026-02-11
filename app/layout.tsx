@@ -22,6 +22,7 @@ const font_syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
 });
+
 export const metadata: Metadata = {
   title: "Project-A",
   description: "Best website ever",
@@ -38,6 +39,11 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} ${bebas_neue.variable} ${font_syne.variable} antialiased`}
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `history.scrollRestoration = "manual"`,
+          }}
+        />
         <SmoothScroll>
           <NextIntlClientProvider>
             <Navbar />
