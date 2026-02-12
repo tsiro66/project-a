@@ -58,7 +58,7 @@ export default function Magnetic({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div ref={triggerRef} className="inline-block p-10 -m-10">
+    <div ref={triggerRef} className="inline-block md:p-10 md:-m-10">
       <div ref={contentRef}>{children}</div>
     </div>
   );
