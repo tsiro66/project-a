@@ -31,7 +31,7 @@ export default function Hero() {
       })
         .fromTo(
           ".hero-text",
-          { y: 100, opacity: 0, filter: "blur(10px)" },
+          { y: 100, opacity: 0.01, filter: "blur(10px)" },
           {
             y: 0,
             opacity: 1,
@@ -104,12 +104,13 @@ export default function Hero() {
     >
       <div
         ref={bgRef}
-        className="absolute inset-0 w-full h-full scale-[1.3] brightness-0 will-change-transform"
+        className="absolute inset-0 w-full h-full scale-[1.3] will-change-transform"
       >
         <Image
           src="/hero-image.webp"
           fill
           priority
+          sizes="100vw"
           className="object-cover"
           alt="Hero Image"
         />

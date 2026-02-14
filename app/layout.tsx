@@ -7,7 +7,7 @@ import {
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale } from "next-intl/server";
+import { getLocale, getMessages } from "next-intl/server";
 import SmoothScroll from "./components/SmoothScroll";
 
 const inter = Inter({
@@ -33,11 +33,14 @@ export const metadata: Metadata = {
   description: "Best website ever",
 };
 
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+const messages = await getMessages();
   const locale = await getLocale();
   return (
     <html lang={locale}>
@@ -50,7 +53,7 @@ export default async function RootLayout({
           }}
         />
         <SmoothScroll>
-          <NextIntlClientProvider>
+          <NextIntlClientProvider messages={messages}>
             <Navbar />
             {children}
           </NextIntlClientProvider>
