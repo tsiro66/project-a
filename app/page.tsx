@@ -1,10 +1,15 @@
 import Hero from "./PageComponents/Hero";
 import AnimatedText from "./PageComponents/AnimatedText";
-import StickySection from "./PageComponents/StickySection";
-import Contact from "./PageComponents/Contact";
-import Footer from "./PageComponents/Footer";
-import Cards from "./PageComponents/Cards";
-import FAQ from "./PageComponents/FAQ";
+import dynamic from "next/dynamic";
+
+
+
+const StickySection = dynamic(() => import("./PageComponents/StickySection"));
+const Cards = dynamic(() => import("./PageComponents/Cards"));
+const FAQ = dynamic(() => import("./PageComponents/FAQ"));
+const Contact = dynamic(() => import("./PageComponents/Contact"));
+const Footer = dynamic(() => import("./PageComponents/Footer"));
+
 
 export default function Home() {
   return (
