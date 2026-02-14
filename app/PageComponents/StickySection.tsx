@@ -17,7 +17,6 @@ export default function StickySection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const t = useTranslations("StickySection");
   
-  // Get the string to use as a dependency for the hook
   const titleText = t("title");
 
   const splitText = (text: string) => {
@@ -32,101 +31,88 @@ export default function StickySection() {
   };
 
   useGSAP(
-  () => {
-    const mm = gsap.matchMedia();
-    const chars = titleRef.current?.querySelectorAll(".char");
+    () => {
+      const mm = gsap.matchMedia();
+      const chars = titleRef.current?.querySelectorAll(".char");
 
-    // --- 1. CHARACTER REVEAL ---
-    // Using fromTo ensures that even if the component re-renders, 
-    // the starting position is forced back to 110%
-    if (chars && chars.length > 0) {
-      gsap.fromTo(chars, 
-        { y: "110%", opacity: 0 }, 
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.05,
-          duration: 0.8,
-          ease: "power3.out",
+      if (chars && chars.length > 0) {
+        gsap.fromTo(chars, 
+          { y: "110%", opacity: 0 }, 
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.05,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+              invalidateOnRefresh: true, 
+            },
+          }
+        );
+      }
+
+      // Κρίσιμη αλλαγή: Το Parallax ενεργοποιείται μόνο από 1280px και πάνω (xl)
+      mm.add("(min-width: 1280px)", () => {
+        ScrollTrigger.create({
+          trigger: leftColumnRef.current,
+          start: "top top",
+          endTrigger: containerRef.current,
+          end: "bottom bottom",
+          pin: true,
+          pinSpacing: false,
+        });
+
+        const tl = gsap.timeline({
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-            // invalidateOnRefresh ensures it recalculates if the page size changes
-            invalidateOnRefresh: true, 
-          },
-        }
-      );
-    }
-
-    // --- 2. DESKTOP PARALLAX ---
-    mm.add("(min-width: 768px)", () => {
-      // Pinning the left column
-      ScrollTrigger.create({
-        trigger: leftColumnRef.current,
-        start: "top top",
-        endTrigger: containerRef.current,
-        end: "bottom bottom",
-        pin: true,
-        pinSpacing: false,
-        id: "left-pin" // Adding IDs helps GSAP keep track
-      });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top center",
-          end: "bottom center",
-          scrub: true,
-          id: "parallax-scroll"
-        },
-      });
-
-      tl.fromTo(
-        lineRef.current,
-        { scaleY: 0, transformOrigin: "top" },
-        { scaleY: 4, duration: 1, ease: "none" },
-        0
-      )
-      .to(
-        titleRef.current,
-        { y: 800, duration: 1, ease: "none" },
-        0
-      )
-      .to(
-        lineRef.current,
-        { y: 1000, duration: 0.5, ease: "none" },
-        0.5
-      );
-    });
-
-    // --- 3. MOBILE ---
-    mm.add("(max-width: 767px)", () => {
-      gsap.fromTo(
-        lineRef.current,
-        { scaleX: 0, transformOrigin: "left" },
-        {
-          scaleX: 1,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 20%",
-            end: "bottom bottom",
+            start: "top center",
+            end: "bottom center",
             scrub: true,
           },
-        }
-      );
-    });
+        });
 
-    // Refresh triggers to ensure all heights (including the right column) are correct
-    ScrollTrigger.refresh();
+        tl.fromTo(
+          lineRef.current,
+          { scaleY: 0, transformOrigin: "top" },
+          { scaleY: 4, duration: 1, ease: "none" },
+          0
+        )
+        .to(
+          titleRef.current,
+          { y: 800, duration: 1, ease: "none" },
+          0
+        )
+        .to(
+          lineRef.current,
+          { y: 1000, duration: 0.5, ease: "none" },
+          0.5
+        );
+      });
 
-  },
-  { 
-    scope: containerRef, 
-    dependencies: [titleText], 
-    revertOnUpdate: true 
-  }
-);
+      // Για οθόνες κάτω από 1280px (Tablets/Mobile)
+      mm.add("(max-width: 1279px)", () => {
+        gsap.fromTo(
+          lineRef.current,
+          { scaleX: 0, transformOrigin: "left" },
+          {
+            scaleX: 1,
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 20%",
+              end: "bottom bottom",
+              scrub: true,
+            },
+          }
+        );
+      });
+
+      return () => mm.revert();
+    },
+    { scope: containerRef, dependencies: [titleText] }
+  );
 
   return (
     <section
@@ -134,24 +120,25 @@ export default function StickySection() {
       ref={containerRef}
       className="relative w-full bg-lime-400 text-black py-20 overflow-hidden"
     >
-      <div className="flex flex-col md:flex-row px-6 md:px-20">
+      {/* Χρήση xl: αντί για lg: για να παραμείνει stacked στην ταμπλέτα */}
+      <div className="flex flex-col xl:flex-row px-6 md:px-20">
         <div
-          className="w-full md:w-1/2 h-fit flex flex-col justify-start"
+          className="w-full xl:w-1/2 h-fit flex flex-col justify-start"
           ref={leftColumnRef}
         >
-          <div className="flex flex-col md:flex-row md:items-start items-center text-center md:text-left gap-0 md:gap-10">
+          {/* Ευθυγράμμιση κειμένου: κεντραρισμένο σε ταμπλέτα, αριστερά σε desktop (xl) */}
+          <div className="flex flex-col xl:flex-row xl:items-start items-center text-center xl:text-left gap-0 xl:gap-10">
             <div
               ref={lineRef}
-              className="hidden md:block md:w-2.5 md:h-60 bg-zinc-900 rounded-xs md:origin-top"
+              className="hidden xl:block xl:w-2.5 xl:h-60 bg-zinc-900 rounded-xs xl:origin-top"
               style={{ willChange: "transform" }}
             />
 
             <h2
               ref={titleRef}
-              className="text-5xl md:text-7xl lg:text-8xl font-sans font-black uppercase tracking-tighter leading-[0.8] flex flex-col"
+              className="text-3xl md:text-4xl lg:text-6xl font-syne font-black italic tracking-tighter uppercase flex flex-col"
               style={{ backfaceVisibility: "hidden" }}
             >
-              {/* Added pb-4 to prevent the last letter's descender from being clipped */}
               <span className="block overflow-hidden px-4 pb-4 -mb-4">
                 {splitText(titleText)}
               </span>
@@ -159,7 +146,8 @@ export default function StickySection() {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col items-center justify-center gap-20 md:gap-[80vh] pt-20 md:pt-96 md:pb-[100vh]">
+        {/* Spacing: Stacked layout για ταμπλέτες, Parallax layout για xl (1280px+) */}
+        <div className="w-full xl:w-1/2 flex flex-col items-center justify-center gap-20 xl:gap-[80vh] pt-20 xl:pt-96 xl:pb-[100vh]">
           <StepContent
             number="01"
             title={t("first.title")}

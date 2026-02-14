@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
-import Button from "../components/Button";
+import Button from "../components/Button/Button";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);

@@ -2,7 +2,6 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function StepContent({
   number,
@@ -69,7 +68,6 @@ export default function StepContent({
 
   return (
     <div ref={container} className="content-block flex flex-col items-start max-w-2xl">
-      {/* ... rest of your JSX remains the same ... */}
       <div className="relative mb-6">
         <span className="step-number absolute -top-32 -left-10 text-[14rem] font-black text-zinc-950/10 select-none z-0">
           {number}

@@ -17,7 +17,8 @@ export default function AnimatedText() {
   const part1 = t("part1");
   const highlight = t("highlight");
   const part2 = t("part2");
-
+  const contentKey = part1 + highlight + part2;
+  
   useGSAP(
     () => {
       if (!textRef.current) return;
@@ -76,13 +77,13 @@ export default function AnimatedText() {
 
       return () => split.revert();
     },
-    // Dependency array updated to track all parts
     { scope: container, dependencies: [part1, highlight, part2] },
   );
 
   return (
     <div
       ref={container}
+      key={contentKey}
       className="min-h-screen flex items-center justify-center p-5 md:p-30 uppercase bg-zinc-950 text-zinc-100 overflow-hidden"
     >
       <div

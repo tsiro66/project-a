@@ -4,6 +4,7 @@ import StickySection from "./PageComponents/StickySection";
 import Contact from "./PageComponents/Contact";
 import Footer from "./PageComponents/Footer";
 import Cards from "./PageComponents/Cards";
+import FAQ from "./PageComponents/FAQ";
 
 export default function Home() {
   return (
@@ -19,6 +20,9 @@ export default function Home() {
       </section>
       <section className="relative z-30 [clip-path:inset(0_0_0_0)]">
         <Cards />
+      </section>
+       <section className="relative z-20">
+        <FAQ />
       </section>
       <section className="relative z-20">
         <Contact />

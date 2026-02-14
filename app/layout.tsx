@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Inter, Syne } from "next/font/google";
+import {
+  Bebas_Neue,
+  Inter,
+  Syne,
+} from "next/font/google";
 import "./globals.css";
-// import ClientWrapper from "./components/ClientWrapper";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import SmoothScroll from "./components/SmoothScroll";
@@ -16,11 +19,13 @@ const bebas_neue = Bebas_Neue({
   variable: "--font-bebas-neue",
   subsets: ["latin"],
   weight: "400",
+  display: "swap",
 });
 
 const font_syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {

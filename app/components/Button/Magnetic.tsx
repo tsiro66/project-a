@@ -10,7 +10,6 @@ export default function Magnetic({ children }: { children: React.ReactNode }) {
   useGSAP(
     () => {
       const element = triggerRef.current;
-      const content = contentRef.current;
 
       if (!element) return;
 
