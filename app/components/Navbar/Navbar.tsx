@@ -57,7 +57,7 @@ export default function Navbar() {
           opacity: 1,
           duration: 1.5,
           ease: "power4.out",
-          delay: 0.2,
+          delay: 1,
         },
       );
 

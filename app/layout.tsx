@@ -54,7 +54,6 @@ const messages = await getMessages();
         />
         <SmoothScroll>
           <NextIntlClientProvider messages={messages}>
-            <Navbar />
             {children}
           </NextIntlClientProvider>
         </SmoothScroll>
