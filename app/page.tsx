@@ -1,6 +1,7 @@
 import Hero from "./PageComponents/Hero";
 import AnimatedText from "./PageComponents/AnimatedText";
 import dynamic from "next/dynamic";
+import Navbar from "./components/Navbar/Navbar";
 
 
 
@@ -14,6 +15,8 @@ const Footer = dynamic(() => import("./PageComponents/Footer"));
 export default function Home() {
   return (
     <main className="relative">
+ <Navbar />
+
       <section className="relative z-20">
         <Hero />
       </section>
