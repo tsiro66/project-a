@@ -24,7 +24,7 @@ export default function Hero() {
     () => {
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
-      // LCP Fix: Αφαίρεση του brightness animation που ξεκινούσε από το μηδέν
+      // Main Entry Animation
       tl.to(bgRef.current, {
         scale: 1.1,
         duration: 2,
@@ -65,7 +65,7 @@ export default function Hero() {
         });
       }
 
-      // --- Performance Fix: Mouse Parallax με quickSetter ---
+      // --- Performance Mouse Parallax (quickSetter) ---
       const xBgSetter = gsap.quickSetter(bgRef.current, "x", "px");
       const yBgSetter = gsap.quickSetter(bgRef.current, "y", "px");
       const xTextSetter = gsap.quickSetter(textContentRef.current, "x", "px");
@@ -73,16 +73,13 @@ export default function Hero() {
 
       const handleMouseMove = (e: MouseEvent) => {
         if (ScrollTrigger.isTouch === 1) return;
-        const { clientX, clientY } = e;
-        const { innerWidth, innerHeight } = window;
-        const xPercent = clientX / innerWidth - 0.5;
-        const yPercent = clientY / innerHeight - 0.5;
+        const xRel = (e.clientX / window.innerWidth - 0.5);
+        const yRel = (e.clientY / window.innerHeight - 0.5);
 
-        // Χρήση setter αντί για gsap.to για 0ms blocking time
-        xBgSetter(xPercent * 20);
-        yBgSetter(yPercent * 20);
-        xTextSetter(xPercent * -40);
-        yTextSetter(yPercent * -40);
+        xBgSetter(xRel * 20);
+        yBgSetter(yRel * 20);
+        xTextSetter(xRel * -40);
+        yTextSetter(yRel * -40);
       };
 
       window.addEventListener("mousemove", handleMouseMove);
