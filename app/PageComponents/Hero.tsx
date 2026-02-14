@@ -24,14 +24,14 @@ export default function Hero() {
     () => {
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
+      // LCP Fix: Αφαίρεση του brightness animation που ξεκινούσε από το μηδέν
       tl.to(bgRef.current, {
         scale: 1.1,
-        filter: "brightness(50%)",
         duration: 2,
       })
         .fromTo(
           ".hero-text",
-          { y: 100, opacity: 0.01, filter: "blur(10px)" },
+          { y: 100, opacity: 0, filter: "blur(10px)" },
           {
             y: 0,
             opacity: 1,
@@ -60,10 +60,16 @@ export default function Hero() {
             )
             .to(word as HTMLElement, 
               { opacity: 0, x: -800, duration: 0.5, ease: "power2.in" }, 
-              "+=0.5" // Visibility delay
+              "+=0.5" 
             );
         });
       }
+
+      // --- Performance Fix: Mouse Parallax με quickSetter ---
+      const xBgSetter = gsap.quickSetter(bgRef.current, "x", "px");
+      const yBgSetter = gsap.quickSetter(bgRef.current, "y", "px");
+      const xTextSetter = gsap.quickSetter(textContentRef.current, "x", "px");
+      const yTextSetter = gsap.quickSetter(textContentRef.current, "y", "px");
 
       const handleMouseMove = (e: MouseEvent) => {
         if (ScrollTrigger.isTouch === 1) return;
@@ -72,22 +78,11 @@ export default function Hero() {
         const xPercent = clientX / innerWidth - 0.5;
         const yPercent = clientY / innerHeight - 0.5;
 
-        gsap.to(bgRef.current, {
-          x: xPercent * 20,
-          y: yPercent * 20,
-          duration: 0.8,
-          ease: "power2.out",
-        });
-
-        gsap.to(textContentRef.current, {
-          x: xPercent * -40,
-          y: yPercent * -40,
-          rotationY: xPercent * 20,
-          rotationX: yPercent * -20,
-          transformPerspective: 1000,
-          duration: 0.8,
-          ease: "power2.out",
-        });
+        // Χρήση setter αντί για gsap.to για 0ms blocking time
+        xBgSetter(xPercent * 20);
+        yBgSetter(yPercent * 20);
+        xTextSetter(xPercent * -40);
+        yTextSetter(yPercent * -40);
       };
 
       window.addEventListener("mousemove", handleMouseMove);
@@ -104,12 +99,13 @@ export default function Hero() {
     >
       <div
         ref={bgRef}
-        className="absolute inset-0 w-full h-full scale-[1.3] will-change-transform"
+        className="absolute inset-0 w-full h-full scale-[1.3] brightness-50 will-change-transform"
       >
         <Image
           src="/hero-image.webp"
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover"
           alt="Hero Image"
@@ -130,7 +126,7 @@ export default function Hero() {
                 <span
                   key={i}
                   className="word-item col-start-1 row-start-1 opacity-0 text-lime-400 italic highlighted-text"
-                  // style={{ textShadow: "0 0 12px rgba(163, 230, 53, 0.6)" }}
+                  style={{ textShadow: "0 0 12px rgba(163, 230, 53, 0.6)" }}
                 >
                   {word}
                 </span>
