@@ -44,6 +44,7 @@ export default function FAQ() {
 
   return (
     <section
+      id="faq-section"
       ref={container}
       className="bg-zinc-950 text-zinc-100 py-24 px-5 md:px-20 border-t border-zinc-800"
     >

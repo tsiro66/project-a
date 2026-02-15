@@ -3,7 +3,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import StepContent from "../components/StepContent";
+import StepContent from "./StepContent";
 import { useTranslations } from "next-intl";
 
 if (typeof window !== "undefined") {

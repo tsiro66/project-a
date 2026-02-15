@@ -142,7 +142,6 @@ export default function Navbar() {
         </div>
 
         {/* Expanded Navigation Menu */}
-        {/* FIX: Use display: none (hidden) when not open to ensure it never "flashes" expanded */}
         <div
           className={`w-full flex-1 flex flex-col ${
             isOpen ? "opacity-100 visible" : "opacity-0 invisible h-0 hidden"
@@ -168,7 +167,9 @@ export default function Navbar() {
               <p className="text-zinc-500 font-mono text-xs uppercase mb-4 tracking-widest nav-link-item">
                 02 / Info
               </p>
-              <span className="nav-link-item text-zinc-400 text-xl font-syne hover:text-white cursor-pointer transition-colors">
+              <span 
+              onClick={() => scrollToSection("#faq-section")}
+              className="nav-link-item text-zinc-400 text-xl font-syne hover:text-white cursor-pointer transition-colors">
                 FAQ
               </span>
               <span className="nav-link-item text-zinc-400 text-xl font-syne hover:text-white cursor-pointer transition-colors">

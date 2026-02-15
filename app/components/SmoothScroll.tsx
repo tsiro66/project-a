@@ -38,7 +38,6 @@ export default function SmoothScroll({
       autoRaf={false}
       options={{
         lerp: 0.1,
-        duration: 1.5, // Ελαφρώς πιο αργό για πιο "premium" αίσθηση
         smoothWheel: true,
         syncTouch: true, // Σημαντικό για να μην έχουμε "μάχη" μεταξύ touch και GSAP
       }}

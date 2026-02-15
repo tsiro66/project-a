@@ -1,13 +1,13 @@
-import Hero from "./PageComponents/Hero";
-import AnimatedText from "./PageComponents/AnimatedText";
+import Hero from "./components/Hero/Hero";
+import AnimatedText from "./components/Text/AnimatedText";
 import dynamic from "next/dynamic";
 import Navbar from "./components/Navbar/Navbar";
 
-const StickySection = dynamic(() => import("./PageComponents/StickySection"));
-const Cards = dynamic(() => import("./PageComponents/Cards"));
-const FAQ = dynamic(() => import("./PageComponents/FAQ"));
-const Contact = dynamic(() => import("./PageComponents/Contact"));
-const Footer = dynamic(() => import("./PageComponents/Footer"));
+const StickySection = dynamic(() => import("./components/Services/StickySection"));
+const Cards = dynamic(() => import("./components/Process/Cards"));
+const FAQ = dynamic(() => import("./components/FAQ/FAQ"));
+const Contact = dynamic(() => import("./components/Contact/Contact"));
+const Footer = dynamic(() => import("./components/Footer"));
 
 export default function Home() {
   return (

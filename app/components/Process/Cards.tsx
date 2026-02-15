@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 
 // 1. Better Loading State: 
 // A simple black div prevents "Layout Shift" and improves LCP.
-const LightTrail = dynamic(() => import("../components/LightTrail"), {
+const LightTrail = dynamic(() => import("./LightTrail"), {
   ssr: false,
   loading: () => <div className="fixed inset-0 bg-zinc-950" />,
 });

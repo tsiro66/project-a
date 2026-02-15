@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
-import ScrollIndicator from "../components/ScrollIndicator";
+import ScrollIndicator from "./ScrollIndicator";
 import Image from "next/image";
 
 if (typeof window !== "undefined") {

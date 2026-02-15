@@ -29,8 +29,8 @@ const font_syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "Project-A",
-  description: "Best website ever",
+  title: "Flux",
+  description: "Websites, eshops and applications",
 };
 
 
