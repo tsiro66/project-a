@@ -22,16 +22,21 @@ export default function Hero() {
 
   useGSAP(
     () => {
-      // 1. Entry Animation - Πιο γρήγορο για να μην καθυστερεί το LCP
+      const mm = gsap.matchMedia();
+
+      // --- SHARED / MOBILE OPTIMIZED LOGIC ---
       const tl = gsap.timeline({
         delay: 0.1,
         defaults: { ease: "power4.out" },
       });
 
+      // Entry Animation: Remove blur on mobile to save TBT
+      const isDesktop = window.innerWidth >= 1024;
+      
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
         .fromTo(
           ".hero-text",
-          { y: 60, opacity: 0, filter: "blur(10px)" },
+          { y: 60, opacity: 0, filter: isDesktop ? "blur(10px)" : "none" },
           { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger: 0.2 },
           "-=1.5"
         )
@@ -42,51 +47,51 @@ export default function Hero() {
           "-=0.6"
         );
 
-      // 2. Cycling Words - "Σπασμένο" σε δικό του timeline
+      // Cycling Words: Optimized with a single timeline stagger for mobile performance
       const wordElements = gsap.utils.toArray(".word-item");
       if (wordElements.length > 0) {
-        const loop = gsap.timeline({ repeat: -1, delay: 1 }); // Καθυστέρηση έναρξης
+        const loop = gsap.timeline({ repeat: -1, delay: 1 });
         wordElements.forEach((word) => {
           loop
             .fromTo(
               word as HTMLElement,
-              { opacity: 0, x: 800 }, // Μικρότερο X για λιγότερο "θόρυβο" στο layout
+              { opacity: 0, x: isDesktop ? 80 : 30 }, // Smaller X on mobile
               { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }
             )
             .to(
               word as HTMLElement,
-              { opacity: 0, x: -800, duration: 0.5, ease: "power2.in" },
+              { opacity: 0, x: isDesktop ? -80 : -30, duration: 0.5, ease: "power2.in" },
               "+=0.8"
             );
         });
       }
 
-      // 3. 3D Parallax & Tilt Logic
-      const xBgSetter = gsap.quickSetter(bgRef.current, "x", "px");
-      const yBgSetter = gsap.quickSetter(bgRef.current, "y", "px");
-      const xTextSetter = gsap.quickSetter(textContentRef.current, "x", "px");
-      const yTextSetter = gsap.quickSetter(textContentRef.current, "y", "px");
-      const rYSetter = gsap.quickSetter(textContentRef.current, "rotationY", "deg");
-      const rXSetter = gsap.quickSetter(textContentRef.current, "rotationX", "deg");
+      // --- DESKTOP ONLY LOGIC (3D & Parallax) ---
+      mm.add("(min-width: 1024px)", () => {
+        const xBgSetter = gsap.quickSetter(bgRef.current, "x", "px");
+        const yBgSetter = gsap.quickSetter(bgRef.current, "y", "px");
+        const xTextSetter = gsap.quickSetter(textContentRef.current, "x", "px");
+        const yTextSetter = gsap.quickSetter(textContentRef.current, "y", "px");
+        const rYSetter = gsap.quickSetter(textContentRef.current, "rotationY", "deg");
+        const rXSetter = gsap.quickSetter(textContentRef.current, "rotationX", "deg");
 
-      const handleMouseMove = (e: MouseEvent) => {
-        if (window.innerWidth < 1024 || ScrollTrigger.isTouch === 1) return;
+        const handleMouseMove = (e: MouseEvent) => {
+          const xRel = e.clientX / window.innerWidth - 0.5;
+          const yRel = e.clientY / window.innerHeight - 0.5;
 
-        const xRel = e.clientX / window.innerWidth - 0.5;
-        const yRel = e.clientY / window.innerHeight - 0.5;
+          xBgSetter(xRel * 20);
+          yBgSetter(yRel * 20);
+          xTextSetter(xRel * -40);
+          yTextSetter(yRel * -40);
+          rYSetter(xRel * 30);
+          rXSetter(yRel * -30);
+        };
 
-        xBgSetter(xRel * 20);
-        yBgSetter(yRel * 20);
-        xTextSetter(xRel * -40);
-        yTextSetter(yRel * -40);
-        
-        // Το 3D εφέ που ζήτησες
-        rYSetter(xRel * 30); 
-        rXSetter(yRel * -30);
-      };
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+      });
 
-      window.addEventListener("mousemove", handleMouseMove);
-      return () => window.removeEventListener("mousemove", handleMouseMove);
+      return () => mm.revert();
     },
     { scope: container }
   );
@@ -96,11 +101,11 @@ export default function Hero() {
       id="hero-section"
       ref={container}
       className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black"
-      style={{ perspective: "1000px" }} // Perspective για το 3D
+      style={{ perspective: "1000px" }}
     >
       <div
         ref={bgRef}
-        className="absolute inset-0 w-full h-full scale-[1.3] brightness-50 will-change-transform"
+        className="absolute inset-0 w-full h-full scale-[1.3] brightness-50"
       >
         <Image
           src="/hero-image.webp"
@@ -108,7 +113,7 @@ export default function Hero() {
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="object-cover"
+          className="object-cover will-change-transform"
           alt="Hero Image"
         />
         <div className="absolute inset-0 bg-linear-to-b from-black/40 via-transparent to-black/60" />
@@ -127,6 +132,7 @@ export default function Hero() {
                 <span
                   key={i}
                   className="word-item col-start-1 row-start-1 opacity-0 text-lime-400 italic highlighted-text"
+                  // Note: Consider moving text-shadow to a desktop-only CSS class if mobile TBT is still high
                   style={{ textShadow: "0 0 12px rgba(163, 230, 53, 0.6)" }}
                 >
                   {word}
