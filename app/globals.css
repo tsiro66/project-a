@@ -18,6 +18,38 @@
     to { transform: translateX(-100%); }
   }
 }
+/* globals.css */
+#initial-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.loader-content {
+  text-align: center;
+}
+
+.loader-logo {
+  font-family: var(--font-syne);
+  font-size: 3rem;
+  font-weight: 900;
+  color: #a3e635;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  /* Simple pulse animation */
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
 
 /* Prevent conflicts between the browser's native scroll and Lenis */
 html.lenis, html.lenis body {

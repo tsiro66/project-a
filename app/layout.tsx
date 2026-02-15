@@ -52,6 +52,13 @@ const messages = await getMessages();
             __html: `history.scrollRestoration = "manual"`,
           }}
         />
+
+        <div id="initial-loader">
+          <div className="loader-content">
+            <h1 className="loader-logo">Flux</h1>
+          </div>
+        </div>
+
         <SmoothScroll>
           <NextIntlClientProvider messages={messages}>
             {children}

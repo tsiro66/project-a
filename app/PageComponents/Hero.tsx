@@ -27,8 +27,19 @@ export default function Hero() {
       // --- SHARED / MOBILE OPTIMIZED LOGIC ---
       const tl = gsap.timeline({
         delay: 0.1,
-        defaults: { ease: "power4.out" },
-      });
+       onStart: () => {
+      // Hide the preloader as the Hero animation begins
+      const loader = document.getElementById("initial-loader");
+      if (loader) {
+        gsap.to(loader, {
+          yPercent: -100, // Slides up like a curtain
+          duration: 0.8,
+          ease: "power4.inOut",
+          onComplete: () => loader.remove() // Clean up the DOM
+        });
+      }
+    }
+  });
 
       // Entry Animation: Remove blur on mobile to save TBT
       const isDesktop = window.innerWidth >= 1024;
