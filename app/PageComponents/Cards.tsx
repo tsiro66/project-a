@@ -3,8 +3,9 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import LightTrail from "../components/LightTrail";
 import { useTranslations } from "next-intl";
+import dynamic from "next/dynamic";
+const LightTrail = dynamic(() => import("../components/LightTrail"));
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);

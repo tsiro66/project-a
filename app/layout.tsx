@@ -5,7 +5,6 @@ import {
   Syne,
 } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar/Navbar";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import SmoothScroll from "./components/SmoothScroll";
@@ -26,6 +25,7 @@ const font_syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
   display: "swap",
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {

@@ -16,12 +16,9 @@ export default function SmoothScroll({
     // 1. Βελτιστοποίηση ScrollTrigger για λιγότερα recalculations
     ScrollTrigger.config({ 
       limitCallbacks: true,
-      ignoreMobileResize: true // Αποφεύγει το "τρέμουλο" σε mobile browsers όταν κρύβεται η address bar
+      ignoreMobileResize: true
     });
 
-    // 2. Lag Smoothing: Αντί για 0, δώσε μια μικρή ανοχή
-    // Αυτό εμποδίζει το "πήδημα" (jank) αλλά μειώνει το CPU load
-    gsap.ticker.lagSmoothing(500, 33);
 
     function update(time: number) {
       lenisRef.current?.lenis?.raf(time * 1000);
