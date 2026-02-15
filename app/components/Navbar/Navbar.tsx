@@ -21,16 +21,13 @@ export default function Navbar() {
   const t = useTranslations("Navbar");
   const lenis = useLenis();
 
-  // Refs for animations
   const navRef = useRef<HTMLElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const bannerRef = useRef<HTMLDivElement>(null);
 
-  // State
   const [isOpen, setIsOpen] = useState(false);
-  const currentLocaleKey = t("home"); // Used to re-trigger animations on language change
+  const currentLocaleKey = t("home");
 
-  // --- Scoped Scroll Logic ---
   const scrollToSection = (id: string) => {
     if (isOpen) setIsOpen(false);
 
@@ -40,28 +37,28 @@ export default function Navbar() {
     });
   };
 
-  // Prevent background scroll when menu is active
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
   }, [isOpen]);
 
-  // --- Animation Orchestration ---
+  // --- Optimized Animation Orchestration ---
   useGSAP(
     () => {
-      // 1. Initial Page Load Entry
-      gsap.fromTo(
-        navRef.current,
-        { y: -100, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.5,
-          ease: "power4.out",
-          delay: 0.2,
-        },
-      );
+      // FIX: Set visibility to hidden immediately to prevent flash, then show when starting
+      gsap.set(navRef.current, { 
+        yPercent: -100, 
+        opacity: 0,
+        autoAlpha: 1 // This sets visibility to visible once GSAP is ready
+      });
 
-      // 2. Hide Banner on Scroll
+      gsap.to(navRef.current, {
+        yPercent: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: "power4.out",
+        delay: 0.2,
+      });
+
       gsap.to(bannerRef.current, {
         y: -50,
         duration: 0.4,
@@ -81,7 +78,6 @@ export default function Navbar() {
     () => {
       if (!panelRef.current) return;
 
-      // 3. Expand/Collapse Panel
       gsap.to(panelRef.current, {
         maxWidth: isOpen ? "100%" : "48rem",
         height: isOpen ? "auto" : "3.5rem",
@@ -89,9 +85,9 @@ export default function Navbar() {
         paddingBottom: isOpen ? "3rem" : "0rem",
         duration: 0.7,
         ease: "expo.inOut",
+        force3D: true, 
       });
 
-      // 4. Staggered Link Entry (on Open or Locale Change)
       if (isOpen) {
         gsap.fromTo(
           ".nav-link-item",
@@ -115,14 +111,14 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 w-full z-50 p-4 md:p-6 flex flex-col items-center pointer-events-none opacity-0 -translate-y-full"
+      // FIX: Added invisible to prevent the flash before JS loads
+      className="fixed top-0 left-0 w-full z-50 p-4 md:p-6 flex flex-col items-center pointer-events-auto invisible"
     >
       <div
         ref={panelRef}
-        className="w-full flex flex-col items-center bg-zinc-900 px-4 rounded-lg pointer-events-auto shadow-2xl"
-        style={{ willChange: "width, height" }}
+        className="w-full flex flex-col items-center bg-zinc-900 px-4 rounded-lg pointer-events-auto shadow-2xl overflow-hidden"
+        style={{ willChange: "width, height, transform" }}
       >
-        {/* Header Section */}
         <div className="w-full h-14 flex items-center justify-between shrink-0">
           <MenuButton
             isOpen={isOpen}
@@ -146,14 +142,13 @@ export default function Navbar() {
         </div>
 
         {/* Expanded Navigation Menu */}
+        {/* FIX: Use display: none (hidden) when not open to ensure it never "flashes" expanded */}
         <div
-          className={`w-full flex-1 flex flex-col transition-all duration-300 ${
-            isOpen ? "opacity-100 visible" : "opacity-0 invisible h-0"
+          className={`w-full flex-1 flex flex-col ${
+            isOpen ? "opacity-100 visible" : "opacity-0 invisible h-0 hidden"
           }`}
         >
-          {/* 3-Column Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full h-full pt-12 px-4 md:px-12">
-            {/* Column 1: Main Nav Links */}
             <div className="flex flex-col gap-4 text-left border-r border-zinc-800/50">
               <p className="text-zinc-500 font-mono text-xs uppercase mb-4 tracking-widest nav-link-item">
                 01 / Menu
@@ -169,12 +164,10 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Column 2: FAQ & Secondary Links (Placeholder) */}
             <div className="flex flex-col gap-4 text-left border-r border-zinc-800/50">
               <p className="text-zinc-500 font-mono text-xs uppercase mb-4 tracking-widest nav-link-item">
                 02 / Info
               </p>
-              {/* Εδώ θα μπουν τα μελλοντικά FAQ/Links σου */}
               <span className="nav-link-item text-zinc-400 text-xl font-syne hover:text-white cursor-pointer transition-colors">
                 FAQ
               </span>
@@ -183,23 +176,19 @@ export default function Navbar() {
               </span>
             </div>
 
-            {/* Column 3: Illustration/Image (Placeholder) */}
             <div className="hidden md:flex flex-col items-center justify-center bg-zinc-800/20 rounded-xl p-8 nav-link-item">
               <p className="text-zinc-600 font-syne italic text-sm">
                 Illustration Placeholder
               </p>
-              {/* Εδώ θα μπει το Image/Illustration σου */}
             </div>
           </div>
 
-          {/* Locale Switcher - Centered at the bottom */}
           <div className="nav-link-item w-full py-8 mt-auto flex justify-center border-t border-zinc-800/50">
             <LocaleSwitcher changeLocaleAction={changeLocaleAction} />
           </div>
         </div>
       </div>
 
-      {/* Decorative Marquee Banner */}
       <div
         ref={bannerRef}
         className={`mt-3 w-full max-w-3xl -z-10 transition-all duration-500 ${

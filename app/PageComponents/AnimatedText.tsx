@@ -91,7 +91,7 @@ export default function AnimatedText() {
     <div
       ref={container}
       key={contentKey}
-      className="min-h-[50vh] md:min-h-screen flex items-center justify-center p-5 md:p-30 uppercase bg-zinc-950 text-zinc-100 overflow-hidden"
+      className="min-h-[70vh] md:min-h-screen flex items-center justify-center p-5 md:p-30 uppercase bg-zinc-950 text-zinc-100 overflow-hidden"
     >
       <div
         ref={textRef}
