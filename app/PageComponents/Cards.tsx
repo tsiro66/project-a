@@ -138,7 +138,7 @@ export default function Cards() {
                 {t(`${card.key}.title`)}
               </h3>
               <div className="flex justify-between items-end">
-                <p className="max-w-[250px] lg:max-w-xl font-medium uppercase text-[10px] lg:text-xl tracking-tighter leading-tight opacity-70">
+                <p className="max-w-62.5 lg:max-w-xl font-medium uppercase text-[10px] lg:text-xl tracking-tighter leading-tight opacity-70">
                   {t(`${card.key}.description`)}
                 </p>
               </div>
