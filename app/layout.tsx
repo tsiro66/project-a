@@ -52,11 +52,11 @@ const messages = await getMessages();
             __html: `history.scrollRestoration = "manual"`,
           }}
         />
-        {/* <SmoothScroll> */}
+        <SmoothScroll>
           <NextIntlClientProvider messages={messages}>
             {children}
           </NextIntlClientProvider>
-        {/* </SmoothScroll> */}
+        </SmoothScroll>
       </body>
     </html>
   );

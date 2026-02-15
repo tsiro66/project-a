@@ -102,7 +102,7 @@ export default function Cards() {
         >
           {/* Intro Card */}
           <div className="relative shrink-0 flex flex-col justify-between p-8 
-            h-auto min-h-[400px] lg:h-[75vh] 
+            h-auto min-h-100 lg:h-[75vh] 
             w-full lg:w-[45vw] 
             border border-zinc-800 bg-zinc-900 text-lime-400"
           >
@@ -112,7 +112,7 @@ export default function Cards() {
               {t("intro.title")}
             </h3>
             <div className="flex justify-between items-end gap-4">
-              <p className="max-w-[220px] lg:max-w-xs font-medium uppercase text-[10px] lg:text-sm leading-tight text-zinc-400">
+              <p className="max-w-55 lg:max-w-xs font-medium uppercase text-[10px] lg:text-sm leading-tight text-zinc-400">
                 {t("intro.description")}
               </p>
               <div className="flex shrink-0 w-10 h-10 lg:w-16 lg:h-16 rounded-full border border-current items-center justify-center text-xl lg:text-3xl">
