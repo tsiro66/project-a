@@ -27,6 +27,9 @@ export default function Hero({ section }: { section: HeroSection }) {
       const mm = gsap.matchMedia();
       const isDesktop = window.innerWidth >= 1024;
 
+      // Set initial states via GSAP, not className
+      gsap.set(".word-item", { opacity: 0, x: isDesktop ? 100 : 40 });
+
       const tl = gsap.timeline({ delay: 0.1 });
 
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
@@ -150,7 +153,7 @@ export default function Hero({ section }: { section: HeroSection }) {
             {section.cyclingWords.map((word, i) => (
               <span
                 key={i}
-                className="word-item col-start-1 row-start-1 opacity-0 text-3xl md:text-6xl lg:text-7xl text-lime-400 italic font-black uppercase tracking-tighter highlighted-text whitespace-nowrap"
+                className="word-item col-start-1 row-start-1 text-3xl md:text-6xl lg:text-7xl text-lime-400 italic font-black uppercase tracking-tighter highlighted-text whitespace-nowrap"
               >
                 {word}
               </span>

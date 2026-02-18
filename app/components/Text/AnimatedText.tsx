@@ -4,7 +4,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+}
 
 type AnimatedTextSection = {
   part1: string;
@@ -56,9 +58,8 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
             force3D: true,
             scrollTrigger: {
               trigger: container.current,
-              start: "top 60%",
-              end: "bottom 80%",
-              scrub: true,
+              start: "top 70%",
+              toggleActions: "play none none reverse",
             },
           });
         } else {
