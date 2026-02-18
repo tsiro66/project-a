@@ -141,12 +141,12 @@ export default function Hero({ section }: { section: HeroSection }) {
         className="relative z-10 text-white px-4 text-center will-change-transform"
         style={{ transformStyle: "preserve-3d" }}
       >
-        <div className="flex flex-col items-center md:gap-4 mb-12">
+        <div className="flex flex-col items-center mb-12">
           <h1 className="hero-title-top text-2xl md:text-5xl lg:text-6xl font-black uppercase font-syne tracking-tighter leading-none">
             {section.title1}
           </h1>
 
-          <div className="hero-cycling-wrapper inline-grid grid-cols-1 font-syne grid-rows-1 justify-items-center h-1 items-center my-4 w-full">
+          <div className="hero-cycling-wrapper inline-grid grid-cols-1 font-syne grid-rows-1 justify-items-center items-center w-full h-16 md:h-20 lg:h-24">
             {section.cyclingWords.map((word, i) => (
               <span
                 key={i}

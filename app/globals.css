@@ -39,14 +39,17 @@ body {
   font-family: var(--font-inter), serif;
 }
 
+.hero-cycling-wrapper {
+  overflow: hidden;
+}
+
 .hero-title-top,
 .hero-title-bottom,
 .hero-cycling-wrapper,
 .hero-subtext,
 .word-item {
-  opacity: 0;
+  visibility: hidden;
 }
-
 
 .highlighted-text {
   display: inline-block;
