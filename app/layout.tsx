@@ -43,10 +43,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    const locale = await getLocale();
-    const messages = await getMessages();
+  const locale = await getLocale();
+  const messages = await getMessages();
   return (
     <html lang={locale}>
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/hero-image.webp"
+          fetchPriority="high"
+        />
+      </head>
       <body
         className={`${inter.variable} ${bebas_neue.variable} ${font_syne.variable} antialiased`}
       >
@@ -58,8 +66,8 @@ export default async function RootLayout({
 
         <SmoothScrollWrapper>
           <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+            {children}
+          </NextIntlClientProvider>
         </SmoothScrollWrapper>
       </body>
     </html>
