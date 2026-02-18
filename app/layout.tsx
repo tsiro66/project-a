@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Inter, Syne } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "./components/SmoothScroll";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import SmoothScrollWrapper from "./components/SmoothScrollWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,7 +20,7 @@ const bebas_neue = Bebas_Neue({
 const font_syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
-  display: "block",
+  display: "swap",
   adjustFontFallback: true,
 });
 
@@ -56,11 +56,11 @@ export default async function RootLayout({
           }}
         />
 
-        <SmoothScroll>
+        <SmoothScrollWrapper>
           <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
-        </SmoothScroll>
+        </SmoothScrollWrapper>
       </body>
     </html>
   );

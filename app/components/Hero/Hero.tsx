@@ -27,9 +27,9 @@ export default function Hero({ section }: { section: HeroSection }) {
       const mm = gsap.matchMedia();
       const isDesktop = window.innerWidth >= 1024;
 
-      const tl = gsap.timeline({
-        delay: 0.1,
-      });
+      gsap.set(bgRef.current, { scale: 1.3 });
+
+      const tl = gsap.timeline({ delay: 0.1 });
 
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
         .fromTo(
@@ -119,10 +119,7 @@ export default function Hero({ section }: { section: HeroSection }) {
       className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black"
       style={{ perspective: "1000px" }}
     >
-      <div
-        ref={bgRef}
-        className="absolute inset-0 w-full h-full scale-[1.3] brightness-50"
-      >
+      <div ref={bgRef} className="absolute inset-0 w-full h-full brightness-50">
         <Image
           src="/hero-image.webp"
           fill
