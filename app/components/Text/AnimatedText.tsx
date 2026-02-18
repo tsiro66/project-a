@@ -27,7 +27,6 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
     let split: SplitText | null = null;
     let ctx: gsap.Context | null = null;
     let resizeTimer: ReturnType<typeof setTimeout>;
-    let refreshTimer: ReturnType<typeof setTimeout>;
 
     const buildAnimation = () => {
       if (ctx) { ctx.revert(); ctx = null; }
@@ -42,7 +41,7 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
 
       const targets = isDesktop ? split.words : split.lines;
 
-      // Set initial hidden state before ScrollTrigger measures anything
+      // Hide immediately — before ScrollTrigger measures anything
       gsap.set(targets, {
         autoAlpha: 0,
         y: isDesktop ? 40 : 20,
@@ -52,44 +51,21 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
       });
 
       ctx = gsap.context(() => {
-        if (isDesktop) {
-          gsap.to(targets, {
-            y: 0,
-            autoAlpha: 1,
-            stagger: 0.07,
-            duration: 1,
-            ease: "power2.out",
-            force3D: true,
-            scrollTrigger: {
-              trigger: container.current,
-              start: "top 70%",
-              toggleActions: "play none none reverse",
-              invalidateOnRefresh: true,
-            },
-          });
-        } else {
-          gsap.to(targets, {
-            y: 0,
-            autoAlpha: 1,
-            stagger: 0.1,
-            duration: 0.6,
-            ease: "power2.out",
-            force3D: true,
-            scrollTrigger: {
-              trigger: container.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-              invalidateOnRefresh: true,
-            },
-          });
-        }
+        gsap.to(targets, {
+          y: 0,
+          autoAlpha: 1,
+          stagger: isDesktop ? 0.07 : 0.1,
+          duration: isDesktop ? 1 : 0.6,
+          ease: "power2.out",
+          force3D: true,
+          scrollTrigger: {
+            trigger: container.current,
+            start: isDesktop ? "top 70%" : "top 80%",
+            // once:true means it fires exactly once and never replays
+            once: true,
+          },
+        });
       }, container);
-
-      // Delay refresh so all tweens are registered before ScrollTrigger recalculates
-      clearTimeout(refreshTimer);
-      refreshTimer = setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
     };
 
     const handleResize = () => {
@@ -108,7 +84,6 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
 
     return () => {
       clearTimeout(resizeTimer);
-      clearTimeout(refreshTimer);
       window.removeEventListener("resize", handleResize);
       if (ctx) ctx.revert();
       if (split) split.revert();
