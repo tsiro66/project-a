@@ -1,29 +1,35 @@
 "use client";
 
-import { Locale, useLocale } from "next-intl";
+import changeLocaleAction from "@/app/actions/ChangeLocaleAction";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
-type Props = {
-  changeLocaleAction: (locale: Locale) => Promise<void>;
-};
+export default function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-export default function LocaleSwitcher({ changeLocaleAction }: Props) {
-  const locale = useLocale();
+  const handleSwitch = (locale: "en" | "el") => {
+    startTransition(async () => {
+      await changeLocaleAction(locale);
+      router.refresh();
+    });
+  };
 
   return (
     <div className="flex gap-6 font-syne">
-      {["en", "el"].map((cur) => (
+      {(["en", "el"] as const).map((cur) => (
         <button
           key={cur}
-          onClick={() => changeLocaleAction(cur as Locale)}
+          onClick={() => handleSwitch(cur)}
+          disabled={isPending}
           className={`text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 cursor-pointer relative group ${
-            locale === cur
+            currentLocale === cur
               ? "text-lime-400"
               : "text-zinc-500 hover:text-white"
           }`}
         >
-          {cur === "en" ? "English" : "Ελληνικά"}
-          {/* Subtle underline for the active locale */}
-          {locale === cur && (
+          {cur === "en" ? "English" : "Ελληνικα"}
+          {currentLocale === cur && (
             <span className="absolute -bottom-1 left-0 w-full h-px bg-lime-400" />
           )}
         </button>

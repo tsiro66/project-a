@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import {
-  Bebas_Neue,
-  Inter,
-  Syne,
-} from "next/font/google";
+import { Bebas_Neue, Inter, Syne } from "next/font/google";
 import "./globals.css";
+import SmoothScroll from "./components/SmoothScroll";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import SmoothScroll from "./components/SmoothScroll";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,24 +20,31 @@ const bebas_neue = Bebas_Neue({
 const font_syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
-  display: "swap",
+  display: "block",
   adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
-  title: "Flux",
-  description: "Websites, eshops and applications",
+  title: "Flux | Κατασκευή Ιστοσελίδων & High-End Digital Solutions",
+  description:
+    "Δημιουργία σύγχρονων ιστοσελίδων, e-shop και εφαρμογών με Next.js και GSAP animations. Υψηλή αισθητική και ταχύτητα.",
+  keywords: [
+    "Next.js developer Greece",
+    "κατασκευή ιστοσελίδων",
+    "freelance web developer greece",
+    "GSAP animations",
+    "δημιουργία eshop",
+    "Flux development",
+  ],
 };
-
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-const messages = await getMessages();
-  const locale = await getLocale();
+    const locale = await getLocale();
+    const messages = await getMessages();
   return (
     <html lang={locale}>
       <body
@@ -61,8 +64,8 @@ const messages = await getMessages();
 
         <SmoothScroll>
           <NextIntlClientProvider messages={messages}>
-            {children}
-          </NextIntlClientProvider>
+          {children}
+        </NextIntlClientProvider>
         </SmoothScroll>
       </body>
     </html>

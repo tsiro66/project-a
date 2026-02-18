@@ -1,91 +1,103 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import { useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-export default function AnimatedText() {
+type AnimatedTextSection = {
+  part1: string;
+  highlight: string;
+  part2: string;
+};
+
+export default function AnimatedText({ section }: { section: AnimatedTextSection }) {
   const container = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const t = useTranslations("AnimatedText");
 
-  const part1 = t("part1");
-  const highlight = t("highlight");
-  const part2 = t("part2");
+  const { part1, highlight, part2 } = section;
   const contentKey = part1 + highlight + part2;
-  
-  useGSAP(
-    () => {
-      if (!textRef.current) return;
 
-      const mm = gsap.matchMedia();
-      let split: SplitText;
+  useEffect(() => {
+    if (!textRef.current || !container.current) return;
 
-      mm.add(
-        {
-          isDesktop: "(min-width: 768px)",
-          isMobile: "(max-width: 767px)",
-        },
-        (context) => {
-          const { isDesktop } = context.conditions as { isDesktop: boolean };
+    let split: SplitText | null = null;
+    let ctx: gsap.Context | null = null;
+    let resizeTimer: ReturnType<typeof setTimeout>;
 
-          // PERFORMANCE FIX: Στο mobile κάνουμε split μόνο lines (λιγότερα DOM nodes)
-          split = new SplitText(textRef.current, { 
-            type: isDesktop ? "words, lines" : "lines" 
+    const buildAnimation = () => {
+      if (ctx) { ctx.revert(); ctx = null; }
+      if (split) { split.revert(); split = null; }
+      if (!textRef.current || !container.current) return;
+
+      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+
+      split = new SplitText(textRef.current, {
+        type: isDesktop ? "words, lines" : "lines",
+      });
+
+      const targets = isDesktop ? split.words : split.lines;
+
+      ctx = gsap.context(() => {
+        gsap.set(targets, {
+          transformPerspective: 1000,
+          backfaceVisibility: "hidden",
+          force3D: true,
+        });
+
+        if (isDesktop) {
+          gsap.from(targets, {
+            y: 40,
+            autoAlpha: 0,
+            stagger: 0.07,
+            duration: 1,
+            ease: "power2.out",
+            force3D: true,
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top 60%",
+              end: "bottom 80%",
+              scrub: true,
+            },
           });
-
-          const targets = isDesktop ? split.words : split.lines;
-
-          gsap.set(targets, {
-            transformPerspective: 1000,
-            backfaceVisibility: "hidden",
+        } else {
+          gsap.from(targets, {
+            y: 20,
+            autoAlpha: 0,
+            stagger: 0.1,
+            duration: 0.6,
+            ease: "power2.out",
+            force3D: true,
+            scrollTrigger: {
+              trigger: container.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
           });
+        }
+      }, container);
+    };
 
-          if (isDesktop) {
-            gsap.from(targets, {
-              y: 40,
-              autoAlpha: 0,
-              stagger: 0.07,
-              duration: 1,
-              ease: "power2.out",
-              force3D: true,
-              scrollTrigger: {
-                trigger: container.current,
-                start: "top 60%", // Λίγο πιο αργά για καλύτερο Performance
-                end: "bottom 80%",
-                scrub: true,
-              },
-            });
-          } else {
-            // Mobile Animation: Πιο ελαφρύ stagger
-            gsap.from(targets, {
-              y: 20,
-              autoAlpha: 0,
-              stagger: 0.1,
-              duration: 0.6,
-              ease: "power2.out",
-              force3D: true,
-              scrollTrigger: {
-                trigger: container.current,
-                start: "top 80%",
-                toggleActions: "play none none reverse",
-              },
-            });
-          }
-        },
-      );
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(buildAnimation, 400);
+    };
 
-      return () => {
-        mm.revert();
-        if (split) split.revert();
-      };
-    },
-    { scope: container, dependencies: [part1, highlight, part2] },
-  );
+    document.fonts.ready.then(() => {
+      requestAnimationFrame(() => {
+        buildAnimation();
+        window.addEventListener("resize", handleResize);
+      });
+    });
+
+    return () => {
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", handleResize);
+      if (ctx) ctx.revert();
+      if (split) split.revert();
+    };
+  }, [part1, highlight, part2]);
 
   return (
     <div
@@ -99,9 +111,7 @@ export default function AnimatedText() {
         style={{ willChange: "transform, opacity" }}
       >
         {part1}{" "}
-        <span className="text-lime-400 highlighted-text">
-          {highlight}
-        </span>{" "}
+        <span className="text-lime-400 highlighted-text">{highlight}</span>{" "}
         {part2}
       </div>
     </div>

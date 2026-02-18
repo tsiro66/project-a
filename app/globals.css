@@ -73,6 +73,7 @@ body {
 
 
 .highlighted-text {
+  display: inline-block;
   color: #a3e635; /* tailwind lime-400 */
   text-shadow: 
     0 0 12px rgba(163, 230, 53, 0.6), 

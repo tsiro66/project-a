@@ -2,6 +2,7 @@ import Hero from "./components/Hero/Hero";
 import AnimatedText from "./components/Text/AnimatedText";
 import dynamic from "next/dynamic";
 import Navbar from "./components/Navbar/Navbar";
+import { getLocale, getTranslations } from "next-intl/server";
 
 const StickySection = dynamic(() => import("./components/Services/StickySection"));
 const Cards = dynamic(() => import("./components/Process/Cards"));
@@ -9,30 +10,33 @@ const FAQ = dynamic(() => import("./components/FAQ/FAQ"));
 const Contact = dynamic(() => import("./components/Contact/Contact"));
 const Footer = dynamic(() => import("./components/Footer"));
 
-export default function Home() {
+export default async function Home() {
+  const t = await getTranslations();
+  const locale = await getLocale();
+
   return (
     <main className="relative">
-      <Navbar />
+    <Navbar section={t.raw('Navbar')} currentLocale={locale} />
       <section className="relative z-20">
-        <Hero />
+        <Hero section={t.raw('Hero')} />
       </section>
       <section className="relative z-20">
-        <AnimatedText />
+        <AnimatedText section={t.raw('AnimatedText')} />
       </section>
       <section className="relative z-20">
-        <StickySection />
+        <StickySection section={t.raw('StickySection')} />
       </section>
       <section className="relative z-30 [clip-path:inset(0_0_0_0)]">
-        <Cards />
+        <Cards section={t.raw('Cards')} />
       </section>
       <section className="relative z-20">
-        <FAQ />
+        <FAQ section={t.raw('FAQ')} />
       </section>
       <section className="relative z-20">
-        <Contact />
+        <Contact section={t.raw('Contact')} />
       </section>
       <section className="sticky bottom-0 overflow-hidden z-10">
-        <Footer />
+        <Footer section={t.raw('Footer')} />
       </section>
     </main>
   );

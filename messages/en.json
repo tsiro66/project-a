@@ -1,7 +1,8 @@
 {
   "Hero": {
-    "title": "You want the best for your business?",
-    "cyclingWords": ["Websites", "E-shop", "Software", "Mobile apps"]
+    "title1": "Custom",
+    "cyclingWords": ["Websites", "E-shops", "Applications"],
+    "title2": "that stand out"
   },
   "Navbar": {
     "menu": "Menu",
@@ -14,88 +15,88 @@
   "AnimatedText": {
     "part1": "THE POWER OF DESIGN MEETS THE EDGE OF TECHNOLOGY. WE CRAFT",
     "highlight": "DIGITAL PRODUCTS THAT STAND OUT.",
-    "part2": "FROM THE FIRST GLANCE. DOWN TO THE LAST PIXEL."
+    "part2": "Contact us to kickstart your project!"
   },
   "StickySection": {
     "title": "Services",
     "first": {
       "title": "Websites",
-      "description": "We provide bespoke web development solutions for businesses and individuals across diverse sectors. Whether you need a sleek presentation site or a dynamic blog, we have the expertise to create a digital presence that exceeds your needs and stands out in the digital landscape."
+      "description": "We build websites for businesses and individuals. Whether you need a simple landing page or a dynamic blog, we have the expertise to create something unique that meets your needs, with an emphasis on design, speed, and SEO."
     },
     "second": {
       "title": "E-commerce",
-      "description": "Just provide your logo or let us design one for you for free and let us take the lead. We deliver high-end e-shops built to international standards, allowing you to start selling online effortlessly and without hassle. Professional, seamless, and results-driven."
+      "description": "Looking to launch your own online store but don't know where to start? At Flux, we handle everything for you. From strategic planning and UI/UX design to integration with banks and shipping providers. Focus on your products and leave the technical side to us, ensuring a stable, secure, and high-performing online presence."
     },
     "third": {
-      "title": "Custom Software",
-      "description": "We redesign critical business processes and boost performance with custom applications. A tailored app offers unique functionalities that off-the-shelf solutions lack, creating a competitive advantage and significantly improving your team's productivity."
+      "title": "Custom Applications",
+      "description": "We work with you to create tailored applications for managing your business's critical processes. Our goal is a digital upgrade that maximizes your team's efficiency and productivity, built exactly to your specifications."
     }
   },
   "Cards": {
     "intro": {
       "title": "Our Process",
-      "description": "From initial concept to final deployment, we follow a structured path to ensure your project's absolute success."
+      "description": "From the initial idea to final implementation, we follow a structured path to ensure the success of your project."
     },
     "first": {
-      "title": "Consultation",
-      "description": "We analyze your goals and lay the strategic foundation to transform your vision into a tangible digital roadmap."
+      "title": "Contact",
+      "description": "We analyze your goals and lay the foundation for a strategy that turns your vision into reality."
     },
     "second": {
       "title": "Design",
-      "description": "We create unique prototypes focusing on user experience (UX) and aesthetic excellence (UI) that represents your brand."
+      "description": "We transform strategy into visuals, designing interfaces that are aesthetic, functional, and user-friendly."
     },
     "third": {
       "title": "Development",
-      "description": "We translate design into high-performance code using modern technologies, ensuring maximum speed and responsiveness."
+      "description": "We turn design into code using modern technologies, ensuring maximum speed and a flawless appearance on every device."
     },
     "fourth": {
       "title": "Refinement",
       "description": "We work with you through successive revision stages until you are 100% satisfied with every detail of the project."
     },
     "fifth": {
-      "title": "Delivery",
-      "description": "Your project goes live! We stay by your side for support, ensuring the smooth operation of your new digital asset."
+      "title": "Launch",
+      "description": "Your project goes live! We stay by your side for support, ensuring the smooth operation of your new site."
     }
   },
   "FAQ": {
-    "title": "Συχνες Ερωτησεις",
+    "title": "Frequently Asked Questions",
     "items": [
       {
-        "q": "Πόσο χρόνο διαρκεί η κατασκευή μιας ιστοσελίδας;",
-        "a": "Aνάλογα με την πολυπλοκότητα του project και τις ανάγκες σας, μπορεί να διαρκέσει απο 2 εβδομάδες μέχρι και 2 μήνες"
+        "q": "How long does it take to build a website?",
+        "a": "Depending on the complexity of the project and your needs, it can range from 2 weeks for a simple website to 6 months for a complex e-shop."
       },
       {
-        "q": "Προσφέρετε υποστήριξη μετά την παράδοση;",
-        "a": "Φυσικά. Παραμένουμε δίπλα σας για οποιαδήποτε τεχνική υποστήριξη ή αναβάθμιση χρειαστεί το ψηφιακό σας προϊόν."
+        "q": "Do you offer post-launch support?",
+        "a": "Of course. We remain by your side for any technical support or upgrades your digital product may need."
       },
       {
-        "q": "Θα είναι η ιστοσελίδα μου φιλική προς τα κινητά;",
-        "a": "Κάθε project μας σχεδιάζεται με 'Mobile First' προσέγγιση, εξασφαλίζοντας τέλεια εμπειρία σε κάθε συσκευή."
+        "q": "Will my website be mobile-friendly?",
+        "a": "Every project is designed with a 'Mobile First' approach, ensuring a perfect experience on every device."
       },
       {
-        "q": "Γιατί να επιλέξω custom σχεδιασμό αντί για έτοιμο template;",
-        "a": "Ένα custom site σχεδιάζεται αποκλειστικά για τις ανάγκες σας. Προσφέρει ανώτερη ταχύτητα, μοναδικό design που ξεχωρίζει από τον ανταγωνισμό και τη δυνατότητα να επεκταθεί χωρίς περιορισμούς στο μέλλον."
+        "q": "Why choose custom design over a ready-made template?",
+        "a": "A custom site is designed exclusively for your needs. It gives you the ability to customize every tiny detail. We can create something completely unique that stands out from the competition while providing unlimited scalability, unlike pre-made solutions."
       },
       {
-        "q": "Θα μπορώ να ανανεώνω το περιεχόμενο μόνος μου;",
-        "a": "Φυσικά. Κατασκευάζουμε το site σας με φιλικό περιβάλλον διαχείρισης, ώστε να μπορείτε να αλλάζετε κείμενα, φωτογραφίες και προϊόντα εύκολα, χωρίς να χρειάζεστε γνώσεις προγραμματισμού."
+        "q": "Will I be able to update the content myself?",
+        "a": "Certainly. We build your site with a user-friendly management interface, so you can easily change text, photos, and products without needing programming knowledge."
       },
       {
-        "q": "Περιλαμβάνεται το SEO στην κατασκευή;",
-        "a": "Κάθε project παραδίδεται με 'Technical SEO' βελτιστοποίηση. Αυτό σημαίνει καθαρό κώδικα, μεγάλες ταχύτητες φόρτωσης και σωστή δομή, ώστε οι μηχανές αναζήτησης να σας βρίσκουν εύκολα."
+        "q": "Is SEO included in the build?",
+        "a": "Every project is delivered with 'Technical SEO' optimization. This means clean code, fast loading speeds, and proper structure so search engines can find you easily."
       },
       {
-        "q": "Ποιο είναι το κόστος για ένα custom project;",
-        "a": "Κάθε επιχείρηση έχει μοναδικές ανάγκες. Μετά την πρώτη μας επικοινωνία, θα λάβετε μια λεπτομερή προσφορά προσαρμοσμένη ακριβώς στο δικό σας πλάνο και προϋπολογισμό."
+        "q": "What is the cost for a custom project?",
+        "a": "Every business has unique needs. After our initial communication, you will receive a detailed proposal tailored exactly to your plan and budget."
       },
       {
-        "q": "Τι τεχνολογίες χρησιμοποιείτε;",
-        "a": "Δεν περιοριζόμαστε σε μία λύση. Επιλέγουμε το tech stack ανάλογα με τις ανάγκες σας—από Astro για κορυφαία ταχύτητα σε στατικά sites, μέχρι Next.js για σύνθετα web apps. Στόχος μας είναι πάντα το maximum performance και η μελλοντική επεκτασιμότητα."
+        "q": "What technologies do you use?",
+        "a": "We don't limit ourselves to one solution. We choose the tech stack based on your needs—from Astro for top-tier speed on static sites to Next.js for complex web apps. Our goal is always maximum performance and future scalability."
       }
     ]
   },
   "Contact": {
-    "title": "Let’s create",
+    "title": "Let's create",
     "subtitle": "something unique",
     "labelName": "Name",
     "labelPhone": "Phone",
@@ -105,10 +106,10 @@
     "placeholderName": "Your name",
     "placeholderPhone": "Your phone number",
     "placeholderEmail": "Your email address",
-    "placeholderMessage": "Tell us about you and your project",
+    "placeholderMessage": "Tell us about your project",
     "button": "Send",
-    "successTitle": "Message Sent",
-    "successMessage": "Thank you for reaching out! We have received your inquiry and will get back to you within 24 hours.",
+    "successTitle": "Success!",
+    "successMessage": "Thank you for reaching out! We have received your message and will contact you shortly.",
     "sendAnother": "Send another message",
     "error": "Something went wrong. Please try again."
   },
@@ -123,9 +124,39 @@
     "contactTitle": "02 / Contact",
     "availabilityTitle": "03 / Availability",
     "availableStatus": "Available for new projects",
-    "bigTextStart": "Impress",
-    "bigTextEnd": "with your site",
-    "cyclingWords": ["EVERYONE", "THE MARKET", "YOUR CLIENTS"],
+    "bigTextStart": "Are you ready for",
+    "cyclingWords": ["your new website?", "your new e-shop?", "your new app?"],
     "builtToImpress": "Built to Impress"
+  },
+
+  "Privacy": {
+    "back": "Back to Flux",
+    "title1": "Privacy",
+    "title2": "Protocol",
+    "lastUpdated": "Last Updated",
+    "date": "February 16, 2026",
+    "summaryTitle": "Executive Summary",
+    "summaryText": "This notice describes how Flux processes your information when you visit flux-web.com.",
+    "summaryPoints": [
+      "No third-party data collection",
+      "No processing of sensitive info",
+      "GDPR / UK GDPR Compliant",
+      "AI features governed by safety protocols"
+    ],
+    "sections": [
+      {
+        "title": "Information Collection",
+        "content": "We collect personal information that you voluntarily provide to us. This includes:",
+        "list": ["Names", "Phone numbers", "Email addresses"]
+      },
+      {
+        "title": "Processing Logic",
+        "content": "We process your information to provide, improve, and administer our Services, and for security and fraud prevention."
+      }
+    ],
+    "contactTitle": "Contact",
+    "contactText": "To review, update, or delete your data, please contact us at:",
+    "address": "Attn: Privacy Dept // Greece",
+    "switchLanguage": "Change Language"
   }
 }

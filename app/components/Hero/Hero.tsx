@@ -4,7 +4,6 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTranslations } from "next-intl";
 import ScrollIndicator from "./ScrollIndicator";
 import Image from "next/image";
 
@@ -12,43 +11,42 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export default function Hero() {
+type HeroSection = {
+  title1: string;
+  title2: string;
+  cyclingWords: string[];
+};
+
+export default function Hero({ section }: { section: HeroSection }) {
   const container = useRef<HTMLDivElement>(null);
   const textContentRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
 
-  const t = useTranslations("Hero");
-  const words = t.raw("cyclingWords") as string[];
-
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
+      const isDesktop = window.innerWidth >= 1024;
 
-      // --- SHARED / MOBILE OPTIMIZED LOGIC ---
       const tl = gsap.timeline({
         delay: 0.1,
-       onStart: () => {
-      // Hide the preloader as the Hero animation begins
-      const loader = document.getElementById("initial-loader");
-      if (loader) {
-        gsap.to(loader, {
-          yPercent: -100, // Slides up like a curtain
-          duration: 0.8,
-          ease: "power4.inOut",
-          onComplete: () => loader.remove() // Clean up the DOM
-        });
-      }
-    }
-  });
+        onStart: () => {
+          const loader = document.getElementById("initial-loader");
+          if (loader) {
+            gsap.to(loader, {
+              yPercent: -100,
+              duration: 0.8,
+              ease: "power4.inOut",
+              onComplete: () => loader.remove(),
+            });
+          }
+        },
+      });
 
-      // Entry Animation: Remove blur on mobile to save TBT
-      const isDesktop = window.innerWidth >= 1024;
-      
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
         .fromTo(
-          ".hero-text",
+          [".hero-title-top", ".hero-cycling-wrapper", ".hero-title-bottom"],
           { y: 60, opacity: 0, filter: isDesktop ? "blur(10px)" : "none" },
-          { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger: 0.2 },
+          { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger: 0.15, ease: "power4.out" },
           "-=1.5"
         )
         .fromTo(
@@ -58,26 +56,24 @@ export default function Hero() {
           "-=0.6"
         );
 
-      // Cycling Words: Optimized with a single timeline stagger for mobile performance
       const wordElements = gsap.utils.toArray(".word-item");
       if (wordElements.length > 0) {
-        const loop = gsap.timeline({ repeat: -1, delay: 1 });
+        const loop = gsap.timeline({ repeat: -1, delay: 1.5 });
         wordElements.forEach((word) => {
           loop
             .fromTo(
               word as HTMLElement,
-              { opacity: 0, x: isDesktop ? 80 : 30 }, // Smaller X on mobile
-              { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }
+              { opacity: 0, x: isDesktop ? 100 : 40 },
+              { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }
             )
             .to(
               word as HTMLElement,
-              { opacity: 0, x: isDesktop ? -80 : -30, duration: 0.5, ease: "power2.in" },
-              "+=0.8"
+              { opacity: 0, x: isDesktop ? -100 : -40, duration: 0.6, ease: "power3.in" },
+              "+=1.2"
             );
         });
       }
 
-      // --- DESKTOP ONLY LOGIC (3D & Parallax) ---
       mm.add("(min-width: 1024px)", () => {
         const xBgSetter = gsap.quickSetter(bgRef.current, "x", "px");
         const yBgSetter = gsap.quickSetter(bgRef.current, "y", "px");
@@ -125,7 +121,7 @@ export default function Hero() {
           fetchPriority="high"
           sizes="100vw"
           className="object-cover will-change-transform"
-          alt="Hero Image"
+          alt="Κατασκευή ιστοσελίδων | eshop | εφαρμογών"
         />
         <div className="absolute inset-0 bg-linear-to-b from-black/40 via-transparent to-black/60" />
       </div>
@@ -135,24 +131,28 @@ export default function Hero() {
         className="relative z-10 text-white px-4 text-center will-change-transform"
         style={{ transformStyle: "preserve-3d" }}
       >
-        <div className="mb-4">
-          <h1 className="hero-text opacity-0 text-2xl md:text-5xl lg:text-6xl font-black uppercase font-syne tracking-tighter leading-tight">
-            {t("title")} <br />
-            <span className="inline-grid grid-cols-1 grid-rows-1 justify-items-center h-[1.2em]">
-              {words.map((word, i) => (
-                <span
-                  key={i}
-                  className="word-item col-start-1 row-start-1 opacity-0 text-lime-400 italic highlighted-text"
-                  // Note: Consider moving text-shadow to a desktop-only CSS class if mobile TBT is still high
-                  style={{ textShadow: "0 0 12px rgba(163, 230, 53, 0.6)" }}
-                >
-                  {word}
-                </span>
-              ))}
-            </span>
+        <div className="flex flex-col items-center md:gap-4 mb-12">
+          <h1 className="hero-title-top opacity-0 text-2xl md:text-5xl lg:text-6xl font-black uppercase font-syne tracking-tighter leading-none">
+            {section.title1}
+          </h1>
+
+          <div className="hero-cycling-wrapper opacity-0 inline-grid grid-cols-1 font-syne grid-rows-1 justify-items-center h-1 items-center my-4 w-full">
+            {section.cyclingWords.map((word, i) => (
+              <span
+                key={i}
+                className="word-item col-start-1 row-start-1 opacity-0 text-3xl md:text-6xl lg:text-7xl text-lime-400 italic font-black uppercase tracking-tighter highlighted-text whitespace-nowrap"
+              >
+                {word}
+              </span>
+            ))}
+          </div>
+
+          <h1 className="hero-title-bottom opacity-0 text-2xl md:text-5xl lg:text-6xl font-black uppercase font-syne tracking-tighter leading-none">
+            {section.title2}
           </h1>
         </div>
-        <p className="hero-subtext opacity-0 text-lg md:text-2xl font-mono text-zinc-400 uppercase tracking-[0.3em]">
+
+        <p className="hero-subtext opacity-0 text-sm md:text-xl font-mono text-zinc-400 uppercase tracking-[0.3em]">
           High-end digital solutions
         </p>
       </div>

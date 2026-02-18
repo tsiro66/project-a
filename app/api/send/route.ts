@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     // 2. Send the email
     const { data, error } = await resend.emails.send({
       from: 'Portfolio <onboarding@resend.dev>', 
-      to: ['theogr99@gmail.com'], // Put your real email here!
+      to: ['info@flux-web.com'], // Put your real email here!
       subject: `New Project Inquiry from ${name}`,
       react: EmailTemplate({ name, email, phone, budget, message }),
     });
