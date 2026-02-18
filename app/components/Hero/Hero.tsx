@@ -32,10 +32,10 @@ export default function Hero({ section }: { section: HeroSection }) {
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
         .fromTo(
           [".hero-title-top", ".hero-cycling-wrapper", ".hero-title-bottom"],
-          { y: 60, opacity: 0 },
+          { y: 60, autoAlpha: 0 },
           {
             y: 0,
-            opacity: 1,
+            autoAlpha: 1,
             duration: 1.2,
             stagger: 0.15,
             ease: "power4.out",
@@ -44,8 +44,8 @@ export default function Hero({ section }: { section: HeroSection }) {
         )
         .fromTo(
           ".hero-subtext",
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.8 },
+          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 1, y: 0, duration: 0.8 },
           "-=0.6",
         );
 
@@ -56,13 +56,13 @@ export default function Hero({ section }: { section: HeroSection }) {
           loop
             .fromTo(
               word as HTMLElement,
-              { opacity: 0, x: isDesktop ? 100 : 40 },
-              { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" },
+              { autoAlpha: 0, x: isDesktop ? 100 : 40 },
+              { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" },
             )
             .to(
               word as HTMLElement,
               {
-                opacity: 0,
+                autoAlpha: 0,
                 x: isDesktop ? -100 : -40,
                 duration: 0.6,
                 ease: "power3.in",
