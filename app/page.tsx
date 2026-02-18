@@ -1,7 +1,6 @@
-import Hero from "./components/Hero/Hero";
 import AnimatedText from "./components/Text/AnimatedText";
 import dynamic from "next/dynamic";
-import Navbar from "./components/Navbar/Navbar";
+
 import { getLocale, getTranslations } from "next-intl/server";
 
 const StickySection = dynamic(() => import("./components/Services/StickySection"));
@@ -9,6 +8,9 @@ const Cards = dynamic(() => import("./components/Process/Cards"));
 const FAQ = dynamic(() => import("./components/FAQ/FAQ"));
 const Contact = dynamic(() => import("./components/Contact/Contact"));
 const Footer = dynamic(() => import("./components/Footer"));
+const Hero = dynamic(() => import("./components/Hero/Hero"))
+const Navbar = dynamic(() => import("./components/Navbar/Navbar"))
+
 
 export default async function Home() {
   const t = await getTranslations();
