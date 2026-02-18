@@ -27,8 +27,6 @@ export default function Hero({ section }: { section: HeroSection }) {
       const mm = gsap.matchMedia();
       const isDesktop = window.innerWidth >= 1024;
 
-      // Set initial states via GSAP, not className
-      gsap.set(".word-item", { opacity: 0, x: isDesktop ? 100 : 40 });
 
       const tl = gsap.timeline({ delay: 0.1 });
 
