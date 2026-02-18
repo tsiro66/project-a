@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -39,15 +39,25 @@ const cardKeys = [
 export default function Cards({ section }: { section: CardsSection }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
+  const [showCanvas, setShowCanvas] = useState(false);
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
 
+      // Mount Three.js canvas just before the section comes into view
+      ScrollTrigger.create({
+        trigger: triggerRef.current,
+        start: "top 120%",
+        onEnter: () => setShowCanvas(true),
+        once: true,
+      });
+
       mm.add("(min-width: 1024px)", () => {
         if (!sectionRef.current) return;
 
-        const getScrollAmount = () => sectionRef.current!.scrollWidth - window.innerWidth;
+        const getScrollAmount = () =>
+          sectionRef.current!.scrollWidth - window.innerWidth;
 
         gsap.to(sectionRef.current, {
           x: () => -getScrollAmount(),
@@ -80,14 +90,14 @@ export default function Cards({ section }: { section: CardsSection }) {
 
       return () => mm.revert();
     },
-    { scope: triggerRef }
+    { scope: triggerRef },
   );
 
   return (
     <div className="relative overflow-hidden">
       <div ref={triggerRef}>
-        <div className="fixed inset-0 pointer-events-none z-0 bg-zinc-950 will-change-transform">
-          <LightTrail />
+        <div className="fixed inset-0 pointer-events-none z-0 bg-zinc-950">
+          {showCanvas && <LightTrail />}
         </div>
 
         <div
@@ -117,7 +127,9 @@ export default function Cards({ section }: { section: CardsSection }) {
               key={card.key}
               className={`process-card relative shrink-0 flex flex-col justify-between p-8 lg:p-10 h-[45vh] lg:h-[75vh] w-full lg:min-w-[75vw] lg:w-fit ${card.color} ${card.text}`}
             >
-              <span className="text-xl lg:text-2xl font-mono font-bold">0{index + 1}</span>
+              <span className="text-xl lg:text-2xl font-mono font-bold">
+                0{index + 1}
+              </span>
               <h3 className="font-black uppercase tracking-tighter leading-[0.8] italic text-[10vw] lg:text-[10vw] pr-6 lg:pr-10">
                 {section[card.key].title}
               </h3>
