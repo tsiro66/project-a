@@ -87,7 +87,7 @@ export default function NotFound() {
       </div>
 
       {/* Floating Background Element (Parallax Decor) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-lime-400/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-lime-400/5 rounded-full blur-[120px] pointer-events-none" />
     </div>
   );
 }

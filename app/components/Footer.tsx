@@ -31,10 +31,13 @@ export default function Footer({ section }: { section: FooterSection }) {
   const wordRef = useRef<HTMLSpanElement>(null);
   const lenis = useLenis();
 
-  const words = section.cyclingWords ?? ["Design", "Code"];
-
+  const words = section.cyclingWords;
+  
   const longestWord = useMemo(() => {
-    return words.reduce((a: string, b: string) => (a.length > b.length ? a : b), "");
+    return words.reduce(
+      (a: string, b: string) => (a.length > b.length ? a : b),
+      "",
+    );
   }, [words]);
 
   const navLinks = [
@@ -53,7 +56,8 @@ export default function Footer({ section }: { section: FooterSection }) {
       gsap.killTweensOf(".footer-link-item");
       gsap.killTweensOf(wordRef.current);
 
-      gsap.fromTo(".footer-link-item",
+      gsap.fromTo(
+        ".footer-link-item",
         { y: 30, opacity: 0 },
         {
           y: 0,
@@ -66,10 +70,11 @@ export default function Footer({ section }: { section: FooterSection }) {
             start: "top 95%",
             toggleActions: "play none none none",
           },
-        }
+        },
       );
 
-      gsap.fromTo(".footer-big-text",
+      gsap.fromTo(
+        ".footer-big-text",
         { y: 50, opacity: 0 },
         {
           y: 0,
@@ -80,7 +85,7 @@ export default function Footer({ section }: { section: FooterSection }) {
             trigger: footerRef.current,
             start: "top 90%",
           },
-        }
+        },
       );
 
       const tl = gsap.timeline({ repeat: -1 });
@@ -97,7 +102,7 @@ export default function Footer({ section }: { section: FooterSection }) {
         ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
-    { scope: footerRef, dependencies: [words] }
+    { scope: footerRef, dependencies: [words] },
   );
 
   return (
@@ -163,7 +168,10 @@ export default function Footer({ section }: { section: FooterSection }) {
             <span className="invisible row-start-1 col-start-1 pointer-events-none select-none">
               {longestWord}
             </span>
-            <span ref={wordRef} className="row-start-1 col-start-1 text-zinc-950">
+            <span
+              ref={wordRef}
+              className="row-start-1 col-start-1 text-zinc-950"
+            >
               {words[0]}
             </span>
           </span>
