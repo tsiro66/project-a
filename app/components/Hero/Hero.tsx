@@ -34,14 +34,10 @@ export default function Hero({ section }: { section: HeroSection }) {
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
         .fromTo(
           [".hero-title-top", ".hero-cycling-wrapper", ".hero-title-bottom"],
-          { y: 60, opacity: 0, filter: isDesktop ? "blur(10px)" : "none" },
+          { y: 60, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            filter: "blur(0px)",
-            duration: 1.2,
-            stagger: 0.15,
-            ease: "power4.out",
           },
           "-=1.5",
         )
@@ -90,17 +86,19 @@ export default function Hero({ section }: { section: HeroSection }) {
           "rotationX",
           "deg",
         );
-
+        let rafId: number;
         const handleMouseMove = (e: MouseEvent) => {
-          const xRel = e.clientX / window.innerWidth - 0.5;
-          const yRel = e.clientY / window.innerHeight - 0.5;
-
-          xBgSetter(xRel * 20);
-          yBgSetter(yRel * 20);
-          xTextSetter(xRel * -40);
-          yTextSetter(yRel * -40);
-          rYSetter(xRel * 30);
-          rXSetter(yRel * -30);
+          cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(() => {
+            const xRel = e.clientX / window.innerWidth - 0.5;
+            const yRel = e.clientY / window.innerHeight - 0.5;
+            xBgSetter(xRel * 20);
+            yBgSetter(yRel * 20);
+            xTextSetter(xRel * -40);
+            yTextSetter(yRel * -40);
+            rYSetter(xRel * 30);
+            rXSetter(yRel * -30);
+          });
         };
 
         window.addEventListener("mousemove", handleMouseMove);

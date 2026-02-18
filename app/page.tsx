@@ -1,6 +1,4 @@
-import AnimatedText from "./components/Text/AnimatedText";
 import dynamic from "next/dynamic";
-
 import { getLocale, getTranslations } from "next-intl/server";
 
 const StickySection = dynamic(() => import("./components/Services/StickySection"));
@@ -10,6 +8,7 @@ const Contact = dynamic(() => import("./components/Contact/Contact"));
 const Footer = dynamic(() => import("./components/Footer"));
 const Hero = dynamic(() => import("./components/Hero/Hero"))
 const Navbar = dynamic(() => import("./components/Navbar/Navbar"))
+const AnimatedText = dynamic(() => import("./components/Text/AnimatedText"))
 
 
 export default async function Home() {
