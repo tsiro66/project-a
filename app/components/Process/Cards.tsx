@@ -45,11 +45,14 @@ export default function Cards({ section }: { section: CardsSection }) {
     () => {
       const mm = gsap.matchMedia();
 
-      // Mount Three.js canvas just before the section comes into view
       ScrollTrigger.create({
         trigger: triggerRef.current,
-        start: "top 120%",
-        onEnter: () => setShowCanvas(true),
+        start: "top 600%",
+        onEnter: () => {
+          setShowCanvas(true)
+          console.log("viewed")
+        }
+          ,
         once: true,
       });
 
