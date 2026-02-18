@@ -47,7 +47,7 @@ export default function Cards({ section }: { section: CardsSection }) {
 
       ScrollTrigger.create({
         trigger: triggerRef.current,
-        start: "top 600%",
+        start: "top 500%",
         onEnter: () => {
           setShowCanvas(true)
           console.log("viewed")
