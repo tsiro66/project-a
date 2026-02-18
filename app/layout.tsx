@@ -8,6 +8,7 @@ import SmoothScrollWrapper from "./components/SmoothScrollWrapper";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap"
 });
 
 const bebas_neue = Bebas_Neue({
@@ -47,14 +48,7 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale}>
-      <head>
-        <link
-          rel="preload"
-          as="image"
-          href="/hero-image.webp"
-          fetchPriority="high"
-        />
-      </head>
+    
       <body
         className={`${inter.variable} ${bebas_neue.variable} ${font_syne.variable} antialiased`}
       >
