@@ -27,7 +27,7 @@ export default function Hero({ section }: { section: HeroSection }) {
       const mm = gsap.matchMedia();
       const isDesktop = window.innerWidth >= 1024;
 
-      const tl = gsap.timeline({ delay: 0.1 });
+      const tl = gsap.timeline({ delay: 0 });
 
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
         .fromTo(
@@ -51,7 +51,7 @@ export default function Hero({ section }: { section: HeroSection }) {
 
       const wordElements = gsap.utils.toArray(".word-item");
       if (wordElements.length > 0) {
-        const loop = gsap.timeline({ repeat: -1, delay: 0.3 });
+        const loop = gsap.timeline({ repeat: -1, delay: 0 });
         wordElements.forEach((word) => {
           loop
             .fromTo(
