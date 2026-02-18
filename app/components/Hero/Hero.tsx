@@ -51,7 +51,7 @@ export default function Hero({ section }: { section: HeroSection }) {
 
       const wordElements = gsap.utils.toArray(".word-item");
       if (wordElements.length > 0) {
-        const loop = gsap.timeline({ repeat: -1, delay: 1.5 });
+        const loop = gsap.timeline({ repeat: -1, delay: 0.3 });
         wordElements.forEach((word) => {
           loop
             .fromTo(
@@ -146,7 +146,7 @@ export default function Hero({ section }: { section: HeroSection }) {
             {section.title1}
           </h1>
 
-          <div className="hero-cycling-wrapper inline-grid grid-cols-1 font-syne grid-rows-1 justify-items-center items-center w-full h-16 md:h-20 lg:h-24">
+          <div className="hero-cycling-wrapper inline-grid grid-cols-1 font-syne grid-rows-1 justify-items-center items-center w-full h-10 md:h-16 lg:h-20">
             {section.cyclingWords.map((word, i) => (
               <span
                 key={i}
