@@ -27,13 +27,27 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
     let split: SplitText | null = null;
     let ctx: gsap.Context | null = null;
     let resizeTimer: ReturnType<typeof setTimeout>;
+    let observer: ResizeObserver | null = null;
+    let hasPlayed = false;
+    // Track the breakpoint so we only rebuild on actual breakpoint crossings
+    let wasDesktop = window.matchMedia("(min-width: 768px)").matches;
 
-    const buildAnimation = () => {
+    const buildAnimation = (forceRebuild = false) => {
+      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+
+      // On mobile, only rebuild if the breakpoint actually changed (not just viewport height)
+      if (!forceRebuild && isDesktop === wasDesktop) return;
+      wasDesktop = isDesktop;
+
       if (ctx) { ctx.revert(); ctx = null; }
       if (split) { split.revert(); split = null; }
       if (!textRef.current || !container.current) return;
 
-      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+      // If already played, just leave text visible — don't re-animate
+      if (hasPlayed) {
+        gsap.set(textRef.current, { autoAlpha: 1, y: 0 });
+        return;
+      }
 
       split = new SplitText(textRef.current, {
         type: isDesktop ? "words, lines" : "lines",
@@ -41,7 +55,6 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
 
       const targets = isDesktop ? split.words : split.lines;
 
-      // Hide immediately — before ScrollTrigger measures anything
       gsap.set(targets, {
         autoAlpha: 0,
         y: isDesktop ? 40 : 20,
@@ -61,30 +74,32 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
           scrollTrigger: {
             trigger: container.current,
             start: isDesktop ? "top 70%" : "top 80%",
-            // once:true means it fires exactly once and never replays
             once: true,
+            onEnter: () => { hasPlayed = true; },
           },
         });
       }, container);
     };
 
-    const handleResize = () => {
+    // ResizeObserver only fires on element dimension changes (not viewport height from address bar)
+    // We watch document.body width to detect breakpoint crossings
+    observer = new ResizeObserver(() => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(buildAnimation, 400);
-    };
+      resizeTimer = setTimeout(() => buildAnimation(false), 400);
+    });
+    observer.observe(document.body);
 
     document.fonts.ready.then(() => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          buildAnimation();
-          window.addEventListener("resize", handleResize);
+          buildAnimation(true);
         });
       });
     });
 
     return () => {
       clearTimeout(resizeTimer);
-      window.removeEventListener("resize", handleResize);
+      observer?.disconnect();
       if (ctx) ctx.revert();
       if (split) split.revert();
     };
