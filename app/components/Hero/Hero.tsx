@@ -27,7 +27,6 @@ export default function Hero({ section }: { section: HeroSection }) {
       const mm = gsap.matchMedia();
       const isDesktop = window.innerWidth >= 1024;
 
-
       const tl = gsap.timeline({ delay: 0.1 });
 
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
@@ -143,11 +142,11 @@ export default function Hero({ section }: { section: HeroSection }) {
         style={{ transformStyle: "preserve-3d" }}
       >
         <div className="flex flex-col items-center md:gap-4 mb-12">
-          <h1 className="hero-title-top opacity-0 text-2xl md:text-5xl lg:text-6xl font-black uppercase font-syne tracking-tighter leading-none">
+          <h1 className="hero-title-top text-2xl md:text-5xl lg:text-6xl font-black uppercase font-syne tracking-tighter leading-none">
             {section.title1}
           </h1>
 
-          <div className="hero-cycling-wrapper opacity-0 inline-grid grid-cols-1 font-syne grid-rows-1 justify-items-center h-1 items-center my-4 w-full">
+          <div className="hero-cycling-wrapper inline-grid grid-cols-1 font-syne grid-rows-1 justify-items-center h-1 items-center my-4 w-full">
             {section.cyclingWords.map((word, i) => (
               <span
                 key={i}
@@ -158,12 +157,12 @@ export default function Hero({ section }: { section: HeroSection }) {
             ))}
           </div>
 
-          <h1 className="hero-title-bottom opacity-0 text-2xl md:text-5xl lg:text-6xl font-black uppercase font-syne tracking-tighter leading-none">
+          <h1 className="hero-title-bottom text-2xl md:text-5xl lg:text-6xl font-black uppercase font-syne tracking-tighter leading-none">
             {section.title2}
           </h1>
         </div>
 
-        <p className="hero-subtext opacity-0 text-sm md:text-xl font-mono text-zinc-400 uppercase tracking-[0.3em]">
+        <p className="hero-subtext text-sm md:text-xl font-mono text-zinc-400 uppercase tracking-[0.3em]">
           High-end digital solutions
         </p>
       </div>
