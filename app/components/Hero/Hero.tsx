@@ -27,8 +27,6 @@ export default function Hero({ section }: { section: HeroSection }) {
       const mm = gsap.matchMedia();
       const isDesktop = window.innerWidth >= 1024;
 
-      gsap.set(bgRef.current, { scale: 1.3 });
-
       const tl = gsap.timeline({ delay: 0.1 });
 
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
@@ -38,6 +36,9 @@ export default function Hero({ section }: { section: HeroSection }) {
           {
             y: 0,
             opacity: 1,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: "power4.out",
           },
           "-=1.5",
         )
@@ -86,6 +87,7 @@ export default function Hero({ section }: { section: HeroSection }) {
           "rotationX",
           "deg",
         );
+
         let rafId: number;
         const handleMouseMove = (e: MouseEvent) => {
           cancelAnimationFrame(rafId);
@@ -117,7 +119,11 @@ export default function Hero({ section }: { section: HeroSection }) {
       className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black"
       style={{ perspective: "1000px" }}
     >
-      <div ref={bgRef} className="absolute inset-0 w-full h-full brightness-50">
+      <div
+        ref={bgRef}
+        className="absolute inset-0 w-full h-full brightness-50"
+        style={{ scale: "1.3" }}
+      >
         <Image
           src="/hero-image.webp"
           fill
