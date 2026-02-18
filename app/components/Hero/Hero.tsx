@@ -29,31 +29,27 @@ export default function Hero({ section }: { section: HeroSection }) {
 
       const tl = gsap.timeline({
         delay: 0.1,
-        onStart: () => {
-          const loader = document.getElementById("initial-loader");
-          if (loader) {
-            gsap.to(loader, {
-              yPercent: -100,
-              duration: 0.8,
-              ease: "power4.inOut",
-              onComplete: () => loader.remove(),
-            });
-          }
-        },
       });
 
       tl.to(bgRef.current, { scale: 1.1, duration: 2 })
         .fromTo(
           [".hero-title-top", ".hero-cycling-wrapper", ".hero-title-bottom"],
           { y: 60, opacity: 0, filter: isDesktop ? "blur(10px)" : "none" },
-          { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.2, stagger: 0.15, ease: "power4.out" },
-          "-=1.5"
+          {
+            y: 0,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 1.2,
+            stagger: 0.15,
+            ease: "power4.out",
+          },
+          "-=1.5",
         )
         .fromTo(
           ".hero-subtext",
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.8 },
-          "-=0.6"
+          "-=0.6",
         );
 
       const wordElements = gsap.utils.toArray(".word-item");
@@ -64,12 +60,17 @@ export default function Hero({ section }: { section: HeroSection }) {
             .fromTo(
               word as HTMLElement,
               { opacity: 0, x: isDesktop ? 100 : 40 },
-              { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }
+              { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" },
             )
             .to(
               word as HTMLElement,
-              { opacity: 0, x: isDesktop ? -100 : -40, duration: 0.6, ease: "power3.in" },
-              "+=1.2"
+              {
+                opacity: 0,
+                x: isDesktop ? -100 : -40,
+                duration: 0.6,
+                ease: "power3.in",
+              },
+              "+=1.2",
             );
         });
       }
@@ -79,8 +80,16 @@ export default function Hero({ section }: { section: HeroSection }) {
         const yBgSetter = gsap.quickSetter(bgRef.current, "y", "px");
         const xTextSetter = gsap.quickSetter(textContentRef.current, "x", "px");
         const yTextSetter = gsap.quickSetter(textContentRef.current, "y", "px");
-        const rYSetter = gsap.quickSetter(textContentRef.current, "rotationY", "deg");
-        const rXSetter = gsap.quickSetter(textContentRef.current, "rotationX", "deg");
+        const rYSetter = gsap.quickSetter(
+          textContentRef.current,
+          "rotationY",
+          "deg",
+        );
+        const rXSetter = gsap.quickSetter(
+          textContentRef.current,
+          "rotationX",
+          "deg",
+        );
 
         const handleMouseMove = (e: MouseEvent) => {
           const xRel = e.clientX / window.innerWidth - 0.5;
@@ -100,7 +109,7 @@ export default function Hero({ section }: { section: HeroSection }) {
 
       return () => mm.revert();
     },
-    { scope: container }
+    { scope: container },
   );
 
   return (
