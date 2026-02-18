@@ -14,11 +14,7 @@ type AnimatedTextSection = {
   part2: string;
 };
 
-export default function AnimatedText({
-  section,
-}: {
-  section: AnimatedTextSection;
-}) {
+export default function AnimatedText({ section }: { section: AnimatedTextSection }) {
   const container = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
@@ -31,16 +27,11 @@ export default function AnimatedText({
     let split: SplitText | null = null;
     let ctx: gsap.Context | null = null;
     let resizeTimer: ReturnType<typeof setTimeout>;
+    let refreshTimer: ReturnType<typeof setTimeout>;
 
     const buildAnimation = () => {
-      if (ctx) {
-        ctx.revert();
-        ctx = null;
-      }
-      if (split) {
-        split.revert();
-        split = null;
-      }
+      if (ctx) { ctx.revert(); ctx = null; }
+      if (split) { split.revert(); split = null; }
       if (!textRef.current || !container.current) return;
 
       const isDesktop = window.matchMedia("(min-width: 768px)").matches;
@@ -51,17 +42,20 @@ export default function AnimatedText({
 
       const targets = isDesktop ? split.words : split.lines;
 
-      ctx = gsap.context(() => {
-        gsap.set(targets, {
-          transformPerspective: 1000,
-          backfaceVisibility: "hidden",
-          force3D: true,
-        });
+      // Set initial hidden state before ScrollTrigger measures anything
+      gsap.set(targets, {
+        autoAlpha: 0,
+        y: isDesktop ? 40 : 20,
+        transformPerspective: 1000,
+        backfaceVisibility: "hidden",
+        force3D: true,
+      });
 
+      ctx = gsap.context(() => {
         if (isDesktop) {
-          gsap.from(targets, {
-            y: 40,
-            autoAlpha: 0,
+          gsap.to(targets, {
+            y: 0,
+            autoAlpha: 1,
             stagger: 0.07,
             duration: 1,
             ease: "power2.out",
@@ -74,9 +68,9 @@ export default function AnimatedText({
             },
           });
         } else {
-          gsap.from(targets, {
-            y: 20,
-            autoAlpha: 0,
+          gsap.to(targets, {
+            y: 0,
+            autoAlpha: 1,
             stagger: 0.1,
             duration: 0.6,
             ease: "power2.out",
@@ -91,7 +85,11 @@ export default function AnimatedText({
         }
       }, container);
 
-      ScrollTrigger.refresh();
+      // Delay refresh so all tweens are registered before ScrollTrigger recalculates
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
     };
 
     const handleResize = () => {
@@ -110,6 +108,7 @@ export default function AnimatedText({
 
     return () => {
       clearTimeout(resizeTimer);
+      clearTimeout(refreshTimer);
       window.removeEventListener("resize", handleResize);
       if (ctx) ctx.revert();
       if (split) split.revert();
