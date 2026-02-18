@@ -14,7 +14,11 @@ type AnimatedTextSection = {
   part2: string;
 };
 
-export default function AnimatedText({ section }: { section: AnimatedTextSection }) {
+export default function AnimatedText({
+  section,
+}: {
+  section: AnimatedTextSection;
+}) {
   const container = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
@@ -29,8 +33,14 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
     let resizeTimer: ReturnType<typeof setTimeout>;
 
     const buildAnimation = () => {
-      if (ctx) { ctx.revert(); ctx = null; }
-      if (split) { split.revert(); split = null; }
+      if (ctx) {
+        ctx.revert();
+        ctx = null;
+      }
+      if (split) {
+        split.revert();
+        split = null;
+      }
       if (!textRef.current || !container.current) return;
 
       const isDesktop = window.matchMedia("(min-width: 768px)").matches;
@@ -60,6 +70,7 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
               trigger: container.current,
               start: "top 70%",
               toggleActions: "play none none reverse",
+              invalidateOnRefresh: true,
             },
           });
         } else {
@@ -74,10 +85,13 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
               trigger: container.current,
               start: "top 80%",
               toggleActions: "play none none reverse",
+              invalidateOnRefresh: true,
             },
           });
         }
       }, container);
+
+      ScrollTrigger.refresh();
     };
 
     const handleResize = () => {
@@ -87,8 +101,10 @@ export default function AnimatedText({ section }: { section: AnimatedTextSection
 
     document.fonts.ready.then(() => {
       requestAnimationFrame(() => {
-        buildAnimation();
-        window.addEventListener("resize", handleResize);
+        requestAnimationFrame(() => {
+          buildAnimation();
+          window.addEventListener("resize", handleResize);
+        });
       });
     });
 
