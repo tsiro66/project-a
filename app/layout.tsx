@@ -9,7 +9,7 @@ import Script from "next/script";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  display: "swap"
+  display: "swap",
 });
 
 const bebas_neue = Bebas_Neue({
@@ -49,27 +49,28 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale}>
-      <body
-        className={`${inter.variable} ${bebas_neue.variable} ${font_syne.variable} antialiased`}
-      >
-      <Script
+      <head>
+        <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-17961934422"
           strategy="afterInteractive"
         />
         <Script id="google-ads-tag" strategy="afterInteractive">
           {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-17961934422');
-          `}
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'AW-17961934422');
+        `}
         </Script>
+      </head>
+      <body
+        className={`${inter.variable} ${bebas_neue.variable} ${font_syne.variable} antialiased`}
+      >
         <script
           dangerouslySetInnerHTML={{
             __html: `history.scrollRestoration = "manual"`,
           }}
         />
-
         <SmoothScrollWrapper>
           <NextIntlClientProvider messages={messages}>
             {children}
