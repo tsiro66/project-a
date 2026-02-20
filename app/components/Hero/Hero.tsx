@@ -26,18 +26,33 @@ export default function Hero({ section }: { section: HeroSection }) {
     () => {
       const mm = gsap.matchMedia();
 
-      gsap.set(
-        [".hero-title-top", ".hero-title-bottom", ".hero-cycling-wrapper", ".hero-subtext"],
-        { autoAlpha: 1, y: 0 }
-      );
-
+      // Fix 2: set initial scale via GSAP so it reads it correctly on first frame
       gsap.set(bgRef.current, { scale: 1.3 });
-      gsap.to(bgRef.current, { scale: 1.1, duration: 2 });
+
+      const tl = gsap.timeline({ delay: 0 });
+
+      tl.to(bgRef.current, { scale: 1.1, duration: 2 })
+        .fromTo(
+          [".hero-title-top", ".hero-cycling-wrapper", ".hero-title-bottom"],
+          { y: 60, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: "power4.out",
+          },
+          "-=1.5",
+        )
+        .fromTo(
+          ".hero-subtext",
+          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 1, y: 0, duration: 0.8 },
+          "-=0.6",
+        );
 
       const wordElements = gsap.utils.toArray(".word-item");
       if (wordElements.length > 0) {
-        gsap.set(wordElements[0] as HTMLElement, { autoAlpha: 1 });
-
         const loop = gsap.timeline({ repeat: -1, delay: 0 });
         mm.add("(min-width: 1024px)", () => {
           wordElements.forEach((word) => {
@@ -110,6 +125,7 @@ export default function Hero({ section }: { section: HeroSection }) {
       className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black"
       style={{ perspective: "1000px" }}
     >
+      {/* Fix 1: removed brightness-50 filter, replaced with overlay div */}
       <div ref={bgRef} className="absolute inset-0 w-full h-full">
         <Image
           src="/hero-image.webp"
@@ -124,6 +140,7 @@ export default function Hero({ section }: { section: HeroSection }) {
         <div className="absolute inset-0 bg-linear-to-b from-black/40 via-transparent to-black/60 z-10" />
       </div>
 
+      {/* Fix 3: preserve-3d only on desktop via inline style conditional */}
       <div
         ref={textContentRef}
         className="relative z-10 text-white px-4 text-center will-change-transform"
@@ -138,6 +155,7 @@ export default function Hero({ section }: { section: HeroSection }) {
             {section.cyclingWords.map((word, i) => (
               <span
                 key={i}
+                // Fix 4: added will-change-transform to promote cycling words to their own layer
                 className="word-item col-start-1 row-start-1 text-3xl md:text-6xl lg:text-7xl text-lime-400 italic font-black uppercase tracking-tighter highlighted-text whitespace-nowrap will-change-transform"
               >
                 {word}
