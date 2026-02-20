@@ -6,5 +6,10 @@ export const NAV_LINKS = [
 ] as const;
 
 export const MARQUEE_ITEMS = [
-  "Web Development", "•", "E-commerce", "•", "Custom Software", "•"
+  "LAUNCH OFFER", 
+  "•", 
+  "ΠΡΟΝΟΜΙΑΚΕΣ ΤΙΜΕΣ ΓΙΑ ΤΑ 5 ΠΡΩΤΑ PROJECTS",
+  "•", 
+  "ΜΟΝΟ 4/5 SLOTS ΔΙΑΘΕΣΙΜΑ",
+  "•",
 ];

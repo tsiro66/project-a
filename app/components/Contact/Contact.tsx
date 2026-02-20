@@ -271,7 +271,7 @@ export default function Contact({ section }: { section: ContactSection }) {
           </div>
 
           {/* Submit */}
-          <div className="form-row md:col-span-2 flex justify-end mt-4">
+          <div className="form-row md:col-span-2 flex justify-center sm:justify-end mt-4">
             <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
               <span className="relative z-10 px-10 flex items-center justify-center min-w-30">
                 {isSubmitting ? (

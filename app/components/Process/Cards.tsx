@@ -115,7 +115,7 @@ export default function Cards({ section }: { section: CardsSection }) {
               {section.intro.title}
             </h3>
             <div className="flex justify-between items-end gap-4">
-              <p className="max-w-55 lg:max-w-xs font-medium uppercase text-[10px] lg:text-sm leading-tight text-zinc-400">
+              <p className="max-w-55 lg:max-w-xs font-medium uppercase text-sm lg:text-lg leading-tight text-zinc-400">
                 {section.intro.description}
               </p>
               <div className="flex shrink-0 w-10 h-10 lg:w-16 lg:h-16 rounded-full border border-current items-center justify-center text-xl lg:text-3xl">
@@ -137,7 +137,7 @@ export default function Cards({ section }: { section: CardsSection }) {
                 {section[card.key].title}
               </h3>
               <div className="flex justify-between items-end">
-                <p className="max-w-62.5 lg:max-w-xl font-medium uppercase text-[10px] lg:text-xl tracking-tighter leading-tight opacity-70">
+                <p className="max-w-62.5 lg:max-w-xl font-medium uppercase text-sm lg:text-2xl tracking-tighter leading-tight opacity-70">
                   {section[card.key].description}
                 </p>
               </div>
