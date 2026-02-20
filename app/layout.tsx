@@ -4,7 +4,6 @@ import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import SmoothScrollWrapper from "./components/SmoothScrollWrapper";
-import Script from "next/script";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -49,20 +48,6 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale}>
-      <head>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17961934422"
-          strategy="afterInteractive"
-        />
-        <Script id="google-ads-tag" strategy="afterInteractive">
-          {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'AW-17961934422');
-        `}
-        </Script>
-      </head>
       <body
         className={`${inter.variable} ${bebas_neue.variable} ${font_syne.variable} antialiased`}
       >
