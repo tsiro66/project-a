@@ -56,11 +56,16 @@ export default async function RootLayout({
         />
         <Script id="google-ads-tag" strategy="afterInteractive">
           {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'AW-17961934422');
-        `}
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    
+    gtag('config', 'AW-17961934422', {
+      'allow_enhanced_conversions': false,
+      'allow_ad_personalization_signals': false,
+      'restricted_data_processing': true
+    });
+  `}
         </Script>
       </head>
       <body
