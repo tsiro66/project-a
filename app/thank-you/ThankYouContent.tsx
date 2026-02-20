@@ -1,8 +1,21 @@
+// app/thank-you/ThankYouContent.tsx  ← client component, fires gtag
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 export default function ThankYouContent() {
+  const hasFired = useRef(false);
+
+  useEffect(() => {
+    if (hasFired.current) return;
+
+    hasFired.current = true;
+    window.gtag("event", "conversion", {
+      send_to: "AW-17961934422/9KiFCJ3Q__obENa89fRC",
+    });
+  }, []);
+
   return (
     <main className="bg-zinc-950 min-h-screen flex items-center justify-center px-6 text-white">
       <div className="max-w-2xl w-full">
